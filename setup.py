@@ -26,6 +26,7 @@ setuptools.setup(
     install_requires=[
         'appdirs',
         'click',
+        'peewee',
     ],
     entry_points={'console_scripts': ['uvalde=uvalde:main']},
     classifiers=[
