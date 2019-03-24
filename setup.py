@@ -19,9 +19,14 @@ setuptools.setup(
     license='MIT',
     package_dir={'': 'source'},
     packages=['uvalde'],
+    # f-strings
+    python_requires='>=3.6',
     # markdown content type
     setup_requires=['setuptools>=38.6.0'],
-    install_requires=['click'],
+    install_requires=[
+        'appdirs',
+        'click',
+    ],
     entry_points={'console_scripts': ['uvalde=uvalde:main']},
     classifiers=[
         'License :: OSI Approved :: MIT License',
