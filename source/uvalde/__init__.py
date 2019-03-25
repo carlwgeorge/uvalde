@@ -4,6 +4,7 @@ from uvalde.commands.import_ import import_
 from uvalde.commands.list_all import list_all
 from uvalde.commands.list_nvrs import list_nvrs
 from uvalde.commands.list_repos import list_repos
+from uvalde.commands.move import move
 
 
 @click.group()
@@ -22,3 +23,4 @@ list_.add_command(list_repos)
 
 main.add_command(import_)
 main.add_command(list_)
+main.add_command(move)
