@@ -2,6 +2,7 @@ import click
 
 from uvalde.config import config
 from uvalde.database import db, NVR
+from uvalde.repodata import createrepo
 from uvalde.transfer import safe_move
 
 
@@ -19,6 +20,7 @@ def move(from_repo, to_repo, nvrs):
         raise SystemExit(click.style(f'configured architectures for {from_repo} and {to_repo} do not match', fg='red'))
 
     db.connect()
+    repodirs = set()
 
     for label in nvrs:
         nvr = NVR.get(label=label)
@@ -27,4 +29,12 @@ def move(from_repo, to_repo, nvrs):
             end = to_base / artifact.path
             safe_move(start, end, cleanup=True)
 
+            # walk up the path to the directory createrepo needs to be run in
+            # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm
+            repodirs.add(start.parent.parent.parent)
+            repodirs.add(end.parent.parent.parent)
+
     db.close()
+
+    for repodir in repodirs:
+        createrepo(repodir)
