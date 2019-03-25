@@ -1,5 +1,6 @@
 import click
 
+from uvalde.commands.list_all import list_all
 from uvalde.commands.list_nvrs import list_nvrs
 from uvalde.commands.list_repos import list_repos
 
@@ -14,6 +15,7 @@ def list_():
     """List subcommands."""
 
 
+list_.add_command(list_all)
 list_.add_command(list_nvrs)
 list_.add_command(list_repos)
 
