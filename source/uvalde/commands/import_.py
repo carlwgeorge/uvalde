@@ -10,9 +10,10 @@ from uvalde.transfer import safe_copy, safe_move
 
 
 @click.command('import')
+@click.option('--keep-original', '-k', is_flag=True)
 @click.argument('repo')
 @click.argument('rpms', type=pathlib.Path, nargs=-1)
-def import_(repo, rpms):
+def import_(keep_original, repo, rpms):
     """Import RPM files to a repo."""
 
     config.load()
@@ -34,7 +35,8 @@ def import_(repo, rpms):
                     repodirs.add(base / architecture)
                     destination = base / architecture / 'packages' / rpm.name[0] / rpm.name
                     safe_copy(rpm, destination)
-                rpm.unlink()
+                if not keep_original:
+                    rpm.unlink()
             else:
                 if pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource'):
                     repodirs.add(base / pkg.arch / 'debug')
@@ -42,7 +44,10 @@ def import_(repo, rpms):
                 else:
                     repodirs.add(base / pkg.arch)
                     destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
-                safe_move(rpm, destination)
+                if keep_original:
+                    safe_copy(rpm, destination)
+                else:
+                    safe_move(rpm, destination)
 
             # record NVR in database
             if pkg.rpm_sourcerpm:
