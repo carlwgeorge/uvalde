@@ -4,21 +4,19 @@ import appdirs
 import peewee
 
 
-def get_db_file():
-    """Generate path for database file."""
+def load_db():
+    """Load database from sqlite file."""
 
     db_dir = pathlib.Path(appdirs.user_data_dir('uvalde'))
     if not db_dir.is_dir():
         db_dir.mkdir(parents=True)
-    return db_dir / 'rpms.sqlite'
-
-
-db = peewee.SqliteDatabase(get_db_file())
+    db_file = db_dir / 'rpms.sqlite'
+    return peewee.SqliteDatabase(db_file)
 
 
 class BaseModel(peewee.Model):
     class Meta:
-        database = db
+        database = load_db()
 
 
 class NVR(BaseModel):

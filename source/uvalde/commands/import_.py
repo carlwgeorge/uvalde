@@ -4,7 +4,7 @@ import click
 import createrepo_c
 
 from uvalde.config import config
-from uvalde.database import db, NVR, Artifact
+from uvalde.database import load_db, NVR, Artifact
 from uvalde.repodata import createrepo
 from uvalde.transfer import safe_copy, safe_move
 
@@ -19,7 +19,10 @@ def import_(keep_original, repo, rpms):
     config.load()
     base = config[repo].base
     architectures = config[repo].architectures
+
+    db = load_db()
     db.connect()
+
     repodirs = set()
 
     with db.atomic():

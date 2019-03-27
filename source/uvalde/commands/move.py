@@ -1,7 +1,7 @@
 import click
 
 from uvalde.config import config
-from uvalde.database import db, NVR
+from uvalde.database import load_db, NVR
 from uvalde.repodata import createrepo
 from uvalde.transfer import safe_move
 
@@ -19,7 +19,9 @@ def move(from_repo, to_repo, nvrs):
     if not config[from_repo].architectures == config[to_repo].architectures:
         raise SystemExit(click.style(f'configured architectures for {from_repo} and {to_repo} do not match', fg='red'))
 
+    db = load_db()
     db.connect()
+
     repodirs = set()
 
     for label in nvrs:
