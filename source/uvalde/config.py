@@ -17,6 +17,26 @@ def load_config():
     return Config(config_file)
 
 
+class Config:
+    """Object to access configured repos."""
+
+    __slots__ = ['parser']
+
+    def __init__(self, config_file):
+        self.parser = configparser.ConfigParser()
+        self.parser.read(config_file)
+
+    def __iter__(self):
+        for name in self.parser.sections():
+            yield RepoConfig(self.parser[name])
+
+    def __getitem__(self, repo):
+        try:
+            return RepoConfig(self.parser[repo])
+        except KeyError:
+            raise SystemExit(click.style(f'{repo} repo not configured', fg='red'))
+
+
 class RepoConfig:
     """Object to access settings for a repo."""
 
@@ -48,23 +68,3 @@ class RepoConfig:
             ]
         except KeyError:
             raise SystemExit(click.style('missing parameter architectures', fg='red'))
-
-
-class Config:
-    """Object to access configured repos."""
-
-    __slots__ = ['parser']
-
-    def __init__(self, config_file):
-        self.parser = configparser.ConfigParser()
-        self.parser.read(config_file)
-
-    def __iter__(self):
-        for name in self.parser.sections():
-            yield RepoConfig(self.parser[name])
-
-    def __getitem__(self, repo):
-        try:
-            return RepoConfig(self.parser[repo])
-        except KeyError:
-            raise SystemExit(click.style(f'{repo} repo not configured', fg='red'))
