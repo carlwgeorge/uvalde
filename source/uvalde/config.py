@@ -5,6 +5,18 @@ import appdirs
 import click
 
 
+def load_config():
+    """Load configurations from config file."""
+
+    config_dir = pathlib.Path(appdirs.user_config_dir('uvalde'))
+    if not config_dir.is_dir():
+        config_dir.mkdir(parents=True)
+    config_file = config_dir / 'repos.ini'
+    if not config_file.exists():
+        raise SystemExit(f'{config_file}: does not exist')
+    return Config(config_file)
+
+
 class RepoConfig:
     """Object to access settings for a repo."""
 
@@ -41,33 +53,18 @@ class RepoConfig:
 class Config:
     """Object to access configured repos."""
 
-    __slots__ = ['file', 'parser']
+    __slots__ = ['parser']
 
-    def __init__(self):
-        config_dir = pathlib.Path(appdirs.user_config_dir('uvalde'))
-        if not config_dir.is_dir():
-            config_dir.mkdir(parents=True)
-        self.file = config_dir / 'repos.ini'
+    def __init__(self, config_file):
         self.parser = configparser.ConfigParser()
+        self.parser.read(config_file)
 
     def __iter__(self):
         for name in self.parser.sections():
             yield RepoConfig(self.parser[name])
 
     def __getitem__(self, repo):
-        """Look up config section of repo."""
-
         try:
             return RepoConfig(self.parser[repo])
         except KeyError:
             raise SystemExit(click.style(f'{repo} repo not configured', fg='red'))
-
-    def load(self):
-        """Load repo configurations from config file."""
-
-        if not self.file.exists():
-            raise SystemExit(f'{self.file}: does not exist')
-        self.parser.read(self.file)
-
-
-config = Config()

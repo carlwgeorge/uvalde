@@ -1,7 +1,7 @@
 import click
 import createrepo_c
 
-from uvalde.config import config
+from uvalde.config import load_config
 
 
 @click.command('nvrs')
@@ -9,7 +9,7 @@ from uvalde.config import config
 def list_nvrs(repo):
     """List RPM NVRs in a repo."""
 
-    config.load()
+    config = load_config()
     srcpkgdir = config[repo].base / 'src' / 'packages'
     for srpm in srcpkgdir.glob('**/*.src.rpm'):
         pkg = createrepo_c.package_from_rpm(f'{srpm}')

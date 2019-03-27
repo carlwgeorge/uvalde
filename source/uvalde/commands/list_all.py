@@ -1,14 +1,14 @@
 import click
 import createrepo_c
 
-from uvalde.config import config
+from uvalde.config import load_config
 
 
 @click.command('all')
 def list_all():
     """List configured repos and NVRs in each."""
 
-    config.load()
+    config = load_config()
     for repo in config:
         click.secho(f'{repo}', fg='cyan')
         srcpkgdir = repo.base / 'src' / 'packages'

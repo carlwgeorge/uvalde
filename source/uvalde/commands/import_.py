@@ -3,7 +3,7 @@ import pathlib
 import click
 import createrepo_c
 
-from uvalde.config import config
+from uvalde.config import load_config
 from uvalde.database import load_db, NVR, Artifact
 from uvalde.repodata import createrepo
 from uvalde.transfer import safe_copy, safe_move
@@ -16,7 +16,7 @@ from uvalde.transfer import safe_copy, safe_move
 def import_(keep_original, repo, rpms):
     """Import RPM files to a repo."""
 
-    config.load()
+    config = load_config()
     base = config[repo].base
     architectures = config[repo].architectures
 
