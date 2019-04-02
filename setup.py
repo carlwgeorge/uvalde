@@ -29,6 +29,12 @@ setuptools.setup(
         'createrepo_c',
         'peewee',
     ],
+    extras_require={
+        'test': [
+            'pytest',
+            'pytest-flake8',
+        ],
+    },
     entry_points={'console_scripts': ['uvalde=uvalde:main']},
     classifiers=[
         'License :: OSI Approved :: MIT License',
