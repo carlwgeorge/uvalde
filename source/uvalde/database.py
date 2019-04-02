@@ -4,19 +4,14 @@ import appdirs
 import peewee
 
 
-def load_db():
-    """Load database from sqlite file."""
-
-    db_dir = pathlib.Path(appdirs.user_data_dir('uvalde'))
-    if not db_dir.is_dir():
-        db_dir.mkdir(parents=True)
-    db_file = db_dir / 'rpms.sqlite'
-    return peewee.SqliteDatabase(db_file)
+# Creating this with None defers the initialization, which is necessary for
+# pytest monkeypatching to work correctly.
+db = peewee.SqliteDatabase(None)
 
 
 class BaseModel(peewee.Model):
     class Meta:
-        database = load_db()
+        database = db
 
 
 class NVR(BaseModel):
@@ -26,3 +21,16 @@ class NVR(BaseModel):
 class Artifact(BaseModel):
     nvr = peewee.ForeignKeyField(NVR, backref='artifacts')
     path = peewee.TextField(unique=True)
+
+
+def load_db():
+    """Load database from sqlite file."""
+
+    db_dir = pathlib.Path(appdirs.user_data_dir('uvalde'))
+    if not db_dir.is_dir():
+        db_dir.mkdir(parents=True)
+
+    db_file = db_dir / 'rpms.sqlite'
+    db.init(db_file)
+
+    return db
