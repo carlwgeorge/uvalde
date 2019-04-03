@@ -1,9 +1,7 @@
 import click
 
 from uvalde.import_ import import_
-from uvalde.list_all import list_all
-from uvalde.list_nvrs import list_nvrs
-from uvalde.list_repos import list_repos
+from uvalde.list_ import list_all, list_nvrs, list_repos
 from uvalde.move import move
 
 
