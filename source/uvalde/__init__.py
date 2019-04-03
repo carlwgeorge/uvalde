@@ -1,10 +1,10 @@
 import click
 
-from uvalde.commands.import_ import import_
-from uvalde.commands.list_all import list_all
-from uvalde.commands.list_nvrs import list_nvrs
-from uvalde.commands.list_repos import list_repos
-from uvalde.commands.move import move
+from uvalde.import_ import import_
+from uvalde.list_all import list_all
+from uvalde.list_nvrs import list_nvrs
+from uvalde.list_repos import list_repos
+from uvalde.move import move
 
 
 @click.group()
