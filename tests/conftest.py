@@ -16,3 +16,9 @@ def tmp_config(tmp_path):
     config_file = config_dir / 'repos.ini'
     with config_file.open('w') as f:
         parser.write(f)
+
+
+@pytest.fixture(autouse=True)
+def tmp_env(monkeypatch, tmp_path):
+    # isolate config and database files to the testing directory
+    monkeypatch.setenv('HOME', str(tmp_path))

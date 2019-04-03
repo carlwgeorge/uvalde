@@ -3,10 +3,7 @@ import click.testing
 import uvalde
 
 
-def test_list_repos(monkeypatch, tmp_path):
-    # isolate config and database files to the testing directory
-    monkeypatch.setenv('HOME', str(tmp_path))
-
+def test_list_repos():
     # setup args
     args = ['list', 'repos']
 

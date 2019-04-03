@@ -5,10 +5,7 @@ import click.testing
 import uvalde
 
 
-def test_import(monkeypatch, tmp_path):
-    # isolate config and database files to the testing directory
-    monkeypatch.setenv('HOME', str(tmp_path))
-
+def test_import(tmp_path):
     # setup args
     args = ['import', '--keep-original', 'repo1']
     test_data = pathlib.Path('tests/data')
