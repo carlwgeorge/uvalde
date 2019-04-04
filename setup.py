@@ -30,7 +30,7 @@ setuptools.setup(
         'peewee',
     ],
     extras_require={
-        'test': [
+        'tests': [
             'pytest',
             'pytest-flake8',
             'repomd',
