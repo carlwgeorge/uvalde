@@ -1,8 +1,8 @@
 import click
 
-from uvalde.import_ import import_
-from uvalde.list_ import list_all, list_nvrs, list_repos
-from uvalde.move import move
+from uvalde.import_command import import_
+from uvalde.list_commands import list_all, list_nvrs, list_repos
+from uvalde.move_command import move
 
 
 @click.group()
