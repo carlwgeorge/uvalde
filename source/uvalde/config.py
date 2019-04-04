@@ -9,8 +9,6 @@ def load_config():
     """Load configurations from config file."""
 
     config_dir = pathlib.Path(appdirs.user_config_dir('uvalde'))
-    if not config_dir.is_dir():
-        config_dir.mkdir(parents=True)
     config_file = config_dir / 'repos.ini'
     if not config_file.exists():
         raise SystemExit(f'{config_file}: does not exist')
