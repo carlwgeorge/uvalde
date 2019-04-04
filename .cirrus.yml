@@ -9,5 +9,5 @@ test_task:
   install_script:
     - apt update
     - apt --assume-yes install cmake gcc libbz2-dev libcurl4-openssl-dev libexpat1-dev libglib2.0-dev liblzma-dev libmagic-dev librpm-dev libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
-    - pip install .[tests]
+    - pip install --editable .[tests]
   test_script: pytest
