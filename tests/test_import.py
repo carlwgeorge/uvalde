@@ -6,17 +6,15 @@ import uvalde
 
 
 def test_import(tmp_path):
-    # setup args
+    runner = click.testing.CliRunner()
+
     args = ['import', '--keep-original', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
-    assert len(args) == 11
 
-    # run it
-    runner = click.testing.CliRunner()
     result = runner.invoke(uvalde.main, args)
-    assert result.exit_code == 0
 
+    assert result.exit_code == 0
     for path in [
         tmp_path / 'repo1/src/packages/c/cello-1.0-1.src.rpm',
         tmp_path / 'repo1/src/repodata/repomd.xml',
