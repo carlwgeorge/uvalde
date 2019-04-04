@@ -1,5 +1,4 @@
 import pathlib
-import textwrap
 
 import click.testing
 import repomd
@@ -16,17 +15,19 @@ def test_import(tmp_path):
 
     result = runner.invoke(uvalde.main, args)
 
-    assert result.output == textwrap.dedent('''\
-        tests/data/cello-1.0-1.i686.rpm -> {0}/repo1/i686/packages/c/
-        tests/data/cello-1.0-1.src.rpm -> {0}/repo1/src/packages/c/
-        tests/data/cello-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/packages/c/
-        tests/data/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/
-        tests/data/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/
-        tests/data/cello-debugsource-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/
-        tests/data/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/
-        tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/i686/packages/c/
-        tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/x86_64/packages/c/
-    '''.format(tmp_path))
+    for line in [
+        'tests/data/cello-1.0-1.i686.rpm -> {0}/repo1/i686/packages/c/',
+        'tests/data/cello-1.0-1.src.rpm -> {0}/repo1/src/packages/c/',
+        'tests/data/cello-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/packages/c/',
+        'tests/data/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
+        'tests/data/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
+        'tests/data/cello-debugsource-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
+        'tests/data/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
+        'tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/i686/packages/c/',
+        'tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/x86_64/packages/c/',
+    ]:
+        assert line.format(tmp_path) in result.output
+
     assert result.exit_code == 0
 
     # src
