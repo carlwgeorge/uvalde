@@ -22,3 +22,6 @@ def tmp_config(tmp_path):
 def tmp_env(monkeypatch, tmp_path):
     # isolate config and database files to the testing directory
     monkeypatch.setenv('HOME', str(tmp_path))
+
+    # force locale to keep click happy
+    monkeypatch.setenv('LANG', 'C.UTF-8')
