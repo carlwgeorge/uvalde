@@ -82,3 +82,12 @@ def test_move(tmp_path, tmp_config):
     assert [p.nevra for p in repo] == ['cello-debuginfo-1.0-1.x86_64', 'cello-debugsource-1.0-1.x86_64']
     assert (tmp_path / 'repo2/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm').exists()
     assert (tmp_path / 'repo2/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
+
+
+def test_move_mixed_architectures(tmp_config_mixed_architectures):
+    runner = click.testing.CliRunner()
+
+    result = runner.invoke(uvalde.main, ['move', 'repo1', 'repo2', 'cello-1.0-1'])
+
+    assert 'configured architectures for repo1 and repo2 do not match' in result.output
+    assert result.exit_code == 1
