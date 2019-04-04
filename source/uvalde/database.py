@@ -31,6 +31,6 @@ def load_db():
         db_dir.mkdir(parents=True)
 
     db_file = db_dir / 'rpms.sqlite'
-    db.init(db_file)
+    db.init(str(db_file))
 
     return db
