@@ -11,14 +11,14 @@ def main():
 
 
 @click.group('list')
-def list_():
+def list_group():
     """List subcommands."""
 
 
-list_.add_command(list_all)
-list_.add_command(list_nvrs)
-list_.add_command(list_repos)
+list_group.add_command(list_all)
+list_group.add_command(list_nvrs)
+list_group.add_command(list_repos)
+main.add_command(list_group)
 
 main.add_command(import_)
-main.add_command(list_)
 main.add_command(move)
