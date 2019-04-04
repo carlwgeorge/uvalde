@@ -17,12 +17,12 @@ def test_list_all(tmp_path):
 
     result = runner.invoke(uvalde.main, ['list', 'all'])
 
-    assert result.exit_code == 0
     assert result.output == textwrap.dedent('''\
         repo1
           cello-1.0-1
         repo2
     ''')
+    assert result.exit_code == 0
 
 
 def test_list_nvrs(tmp_path):
@@ -36,10 +36,10 @@ def test_list_nvrs(tmp_path):
 
     result = runner.invoke(uvalde.main, ['list', 'nvrs', 'repo1'])
 
-    assert result.exit_code == 0
     assert result.output == textwrap.dedent('''\
         cello-1.0-1
     ''')
+    assert result.exit_code == 0
 
 
 def test_list_repos():
@@ -47,8 +47,8 @@ def test_list_repos():
 
     result = runner.invoke(uvalde.main, ['list', 'repos'])
 
-    assert result.exit_code == 0
     assert result.output == textwrap.dedent('''\
         repo1
         repo2
     ''')
+    assert result.exit_code == 0
