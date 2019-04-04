@@ -33,6 +33,7 @@ setuptools.setup(
         'test': [
             'pytest',
             'pytest-flake8',
+            'repomd',
         ],
     },
     entry_points={'console_scripts': ['uvalde=uvalde:main']},
