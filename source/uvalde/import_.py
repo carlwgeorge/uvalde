@@ -31,34 +31,50 @@ def import_(keep_original, repo, rpms):
             # read metadata from RPM file
             pkg = createrepo_c.package_from_rpm(f'{rpm}')
 
-            # move RPM file to destination
             if pkg.arch == 'noarch':
+                # record NVR in database
+                label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
+                nvr, _ = NVR.get_or_create(label=label)
+
                 # noarch goes in all architectures
                 for architecture in architectures:
+                    # compute destination path
                     repodirs.add(base / architecture)
                     destination = base / architecture / 'packages' / rpm.name[0] / rpm.name
+
+                    # record Artifact in database
+                    artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
+
+                    # move RPM file to destination
                     safe_copy(rpm, destination)
+
                 if not keep_original:
                     rpm.unlink()
             else:
+                # record NVR in database
+                if pkg.rpm_sourcerpm:
+                    label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
+                else:
+                    # if pkg doesn't have the rpm_sourcerpm attribute, it's a SRPM itself
+                    label = f'{pkg.name}-{pkg.version}-{pkg.release}'
+                nvr, _ = NVR.get_or_create(label=label)
+
+                # compute destination path
                 if pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource'):
                     repodirs.add(base / pkg.arch / 'debug')
                     destination = base / pkg.arch / 'debug' / 'packages' / rpm.name[0] / rpm.name
                 else:
                     repodirs.add(base / pkg.arch)
                     destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
+
+                # record Artifact in database
+                artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
+
+                # move RPM file to destination
                 if keep_original:
                     safe_copy(rpm, destination)
                 else:
                     safe_move(rpm, destination)
-
-            # record NVR in database
-            if pkg.rpm_sourcerpm:
-                label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
-            else:
-                label = f'{pkg.name}-{pkg.version}-{pkg.release}'
-            nvr, _ = NVR.get_or_create(label=label)
-            artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
 
     db.close()
 
