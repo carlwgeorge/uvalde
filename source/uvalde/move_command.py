@@ -1,6 +1,6 @@
 import click
 
-from uvalde.config import load_config
+from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR
 from uvalde.repodata import createrepo
 from uvalde.transfer import safe_move

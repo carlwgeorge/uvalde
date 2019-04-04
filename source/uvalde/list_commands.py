@@ -1,7 +1,7 @@
 import click
 import createrepo_c
 
-from uvalde.config import load_config
+from uvalde.configuration import load_config
 
 
 @click.command('all')
