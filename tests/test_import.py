@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 
 import click.testing
 import repomd
@@ -9,26 +10,42 @@ import uvalde
 def test_import(tmp_path, tmp_config):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep-original', 'repo1']
+    args = ['import', 'repo1']
     test_data = pathlib.Path('tests/data')
-    args.extend(map(str, test_data.glob('*.rpm')))
+    for rpm in test_data.glob('*.rpm'):
+        destination = tmp_path / rpm.name
+        shutil.copy2(rpm, destination)
+        args.append(str(destination))
 
     result = runner.invoke(uvalde.main, args)
 
     for line in [
-        'tests/data/cello-1.0-1.i686.rpm -> {0}/repo1/i686/packages/c/',
-        'tests/data/cello-1.0-1.src.rpm -> {0}/repo1/src/packages/c/',
-        'tests/data/cello-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/packages/c/',
-        'tests/data/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
-        'tests/data/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
-        'tests/data/cello-debugsource-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
-        'tests/data/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
-        'tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/i686/packages/c/',
-        'tests/data/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/x86_64/packages/c/',
+        '{0}/cello-1.0-1.i686.rpm -> {0}/repo1/i686/packages/c/',
+        '{0}/cello-1.0-1.src.rpm -> {0}/repo1/src/packages/c/',
+        '{0}/cello-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/packages/c/',
+        '{0}/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
+        '{0}/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
+        '{0}/cello-debugsource-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
+        '{0}/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
+        '{0}/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/i686/packages/c/',
+        '{0}/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/x86_64/packages/c/',
     ]:
         assert line.format(tmp_path) in result.output
 
     assert result.exit_code == 0
+
+    # ensure original files are gone
+    for rpm in [
+        'cello-1.0-1.i686.rpm',
+        'cello-1.0-1.src.rpm',
+        'cello-1.0-1.x86_64.rpm',
+        'cello-debuginfo-1.0-1.i686.rpm',
+        'cello-debuginfo-1.0-1.x86_64.rpm',
+        'cello-debugsource-1.0-1.i686.rpm',
+        'cello-debugsource-1.0-1.x86_64.rpm',
+        'cello-extra-1.0-1.noarch.rpm',
+    ]:
+        assert not (tmp_path / rpm).exists()
 
     # src
     repo = repomd.load(f'file://{tmp_path}/repo1/src')
