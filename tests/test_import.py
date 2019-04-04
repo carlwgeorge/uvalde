@@ -2,15 +2,19 @@ import pathlib
 import shutil
 
 import click.testing
+import pytest
 import repomd
 
 import uvalde
 
 
-def test_import(tmp_path, tmp_config):
+@pytest.mark.parametrize('keep_flag', [False, True])
+def test_import(tmp_path, tmp_config, keep_flag):
     runner = click.testing.CliRunner()
 
     args = ['import', 'repo1']
+    if keep_flag:
+        args.append('--keep-original')
     test_data = pathlib.Path('tests/data')
     for rpm in test_data.glob('*.rpm'):
         destination = tmp_path / rpm.name
@@ -34,7 +38,7 @@ def test_import(tmp_path, tmp_config):
 
     assert result.exit_code == 0
 
-    # ensure original files are gone
+    # check original files
     for rpm in [
         'cello-1.0-1.i686.rpm',
         'cello-1.0-1.src.rpm',
@@ -45,7 +49,10 @@ def test_import(tmp_path, tmp_config):
         'cello-debugsource-1.0-1.x86_64.rpm',
         'cello-extra-1.0-1.noarch.rpm',
     ]:
-        assert not (tmp_path / rpm).exists()
+        if keep_flag:
+            assert (test_data / rpm).exists()
+        else:
+            assert not (tmp_path / rpm).exists()
 
     # src
     repo = repomd.load(f'file://{tmp_path}/repo1/src')
