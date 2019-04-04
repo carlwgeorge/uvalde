@@ -6,7 +6,7 @@ import repomd
 import uvalde
 
 
-def test_import(tmp_path):
+def test_import(tmp_path, tmp_config):
     runner = click.testing.CliRunner()
 
     args = ['import', '--keep-original', 'repo1']

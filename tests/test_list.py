@@ -6,7 +6,7 @@ import click.testing
 import uvalde
 
 
-def test_list_all(tmp_path):
+def test_list_all(tmp_config):
     runner = click.testing.CliRunner()
 
     # import rpms so output is meaningful
@@ -25,7 +25,7 @@ def test_list_all(tmp_path):
     assert result.exit_code == 0
 
 
-def test_list_nvrs(tmp_path):
+def test_list_nvrs(tmp_config):
     runner = click.testing.CliRunner()
 
     # import rpms so output is meaningful
@@ -42,7 +42,7 @@ def test_list_nvrs(tmp_path):
     assert result.exit_code == 0
 
 
-def test_list_repos():
+def test_list_repos(tmp_config):
     runner = click.testing.CliRunner()
 
     result = runner.invoke(uvalde.main, ['list', 'repos'])

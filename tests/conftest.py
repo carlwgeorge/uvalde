@@ -3,7 +3,7 @@ import configparser
 import pytest
 
 
-@pytest.fixture(autouse=True)
+@pytest.fixture
 def tmp_config(tmp_path):
     parser = configparser.ConfigParser()
     for repo in ['repo1', 'repo2']:
