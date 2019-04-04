@@ -32,6 +32,7 @@ setuptools.setup(
     extras_require={
         'tests': [
             'pytest',
+            'pytest-cov',
             'pytest-flake8',
             'repomd',
         ],
