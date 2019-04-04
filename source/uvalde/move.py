@@ -17,7 +17,7 @@ def move(from_repo, to_repo, nvrs):
     from_base = config[from_repo].base
     to_base = config[to_repo].base
     if not config[from_repo].architectures == config[to_repo].architectures:
-        raise SystemExit(click.style(f'configured architectures for {from_repo} and {to_repo} do not match', fg='red'))
+        raise SystemExit(f'configured architectures for {from_repo} and {to_repo} do not match')
 
     db = load_db()
     db.connect()

@@ -17,9 +17,9 @@ def safe_check(start, end):
     """Validate existence of files and directories for a move/copy."""
 
     if not start.exists():
-        raise SystemExit(click.style(f'{start} does not exist', fg='red'))
+        raise SystemExit(f'{start} does not exist')
     if end.exists():
-        raise SystemExit(click.style(f'{end} already exists', fg='red'))
+        raise SystemExit(f'{end} already exists')
     if not end.parent.is_dir():
         end.parent.mkdir(parents=True)
 

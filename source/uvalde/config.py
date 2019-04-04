@@ -2,7 +2,6 @@ import configparser
 import pathlib
 
 import appdirs
-import click
 
 
 def load_config():
@@ -32,7 +31,7 @@ class Config:
         try:
             return RepoConfig(self.parser[repo])
         except KeyError:
-            raise SystemExit(click.style(f'{repo} repo not configured', fg='red'))
+            raise SystemExit(f'{repo}: repo not configured')
 
 
 class RepoConfig:
@@ -53,7 +52,7 @@ class RepoConfig:
         try:
             return pathlib.Path(self.section['base'])
         except KeyError:
-            raise SystemExit(click.style('missing parameter base', fg='red'))
+            raise SystemExit(f'{self}: missing parameter base')
 
     @property
     def architectures(self):
@@ -65,4 +64,4 @@ class RepoConfig:
                 for architecture in self.section['architectures'].split(',')
             ]
         except KeyError:
-            raise SystemExit(click.style('missing parameter architectures', fg='red'))
+            raise SystemExit(f'{self}: missing parameter architectures')
