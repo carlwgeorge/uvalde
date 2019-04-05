@@ -82,3 +82,15 @@ def test_import(tmp_path, tmp_config, keep_flag):
     assert [p.nevra for p in repo] == ['cello-debuginfo-1.0-1.x86_64', 'cello-debugsource-1.0-1.x86_64']
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm').exists()
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
+
+
+def test_import_architecture_not_configured(tmp_config_architecture_not_configured):
+    runner = click.testing.CliRunner()
+
+    args = ['import', '--keep-original', 'repo1']
+    test_data = pathlib.Path('tests/data')
+    args.extend(map(str, test_data.glob('*.rpm')))
+
+    result = runner.invoke(uvalde.main, args)
+    assert f'architecture not configured for repo1' in result.output
+    assert result.exit_code == 1

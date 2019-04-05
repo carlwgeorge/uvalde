@@ -51,6 +51,10 @@ def import_(keep_original, repo, rpms):
                 if not keep_original:
                     rpm.unlink()
             else:
+                # ensure the incoming architecture matches one of the configured architectures
+                if pkg.arch != 'src' and pkg.arch not in architectures:
+                    raise SystemExit(f'{rpm.name}: architecture not configured for {repo}')
+
                 # record NVR in database
                 if pkg.rpm_sourcerpm:
                     label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
