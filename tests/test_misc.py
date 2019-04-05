@@ -4,7 +4,7 @@ import repomd
 import uvalde
 
 
-@pytest.mark.parametrize('real_path', [True, False])
+@pytest.mark.parametrize('real_path', [True, False], ids=['target exists', 'target does not exist'])
 def test_createrepo(tmp_path, real_path):
     target = tmp_path / 'repo'
 
@@ -24,7 +24,12 @@ def test_createrepo(tmp_path, real_path):
         (False, False),
         (True, True),
         (True, False),
-    ]
+    ],
+    ids=[
+        'start does not exist',
+        'end already exists',
+        'start exists and end does not',
+    ],
 )
 def test_safe_check(tmp_path, start_exists, end_exists):
     start = tmp_path / 'a'

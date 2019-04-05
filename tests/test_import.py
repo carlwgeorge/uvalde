@@ -8,7 +8,7 @@ import repomd
 import uvalde
 
 
-@pytest.mark.parametrize('keep_flag', [False, True])
+@pytest.mark.parametrize('keep_flag', [False, True], ids=['remove original', 'keep original'])
 def test_import(tmp_path, tmp_config, keep_flag):
     runner = click.testing.CliRunner()
 
