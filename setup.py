@@ -27,7 +27,7 @@ setuptools.setup(
         'appdirs',
         'click',
         'createrepo_c',
-        'peewee',
+        'peewee>=3.0.0',
     ],
     extras_require={
         'tests': [
