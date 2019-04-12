@@ -23,19 +23,6 @@ def test_import(tmp_path, tmp_config, keep_flag):
 
     result = runner.invoke(uvalde.main, args)
 
-    for line in [
-        '{0}/cello-1.0-1.i686.rpm -> {0}/repo1/i686/packages/c/',
-        '{0}/cello-1.0-1.src.rpm -> {0}/repo1/src/packages/c/',
-        '{0}/cello-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/packages/c/',
-        '{0}/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
-        '{0}/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
-        '{0}/cello-debugsource-1.0-1.i686.rpm -> {0}/repo1/i686/debug/packages/c/',
-        '{0}/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo1/x86_64/debug/packages/c/',
-        '{0}/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/i686/packages/c/',
-        '{0}/cello-extra-1.0-1.noarch.rpm -> {0}/repo1/x86_64/packages/c/',
-    ]:
-        assert line.format(tmp_path) in result.output
-
     assert result.exit_code == 0
 
     # check original files

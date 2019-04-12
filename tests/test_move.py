@@ -16,18 +16,6 @@ def test_move(tmp_path, tmp_config):
 
     result = runner.invoke(uvalde.main, ['move', 'repo1', 'repo2', 'cello-1.0-1'])
 
-    for line in [
-        '{0}/repo1/i686/packages/c/cello-1.0-1.i686.rpm -> {0}/repo2/i686/packages/c/',
-        '{0}/repo1/src/packages/c/cello-1.0-1.src.rpm -> {0}/repo2/src/packages/c/',
-        '{0}/repo1/x86_64/packages/c/cello-1.0-1.x86_64.rpm -> {0}/repo2/x86_64/packages/c/',
-        '{0}/repo1/i686/debug/packages/c/cello-debuginfo-1.0-1.i686.rpm -> {0}/repo2/i686/debug/packages/c/',
-        '{0}/repo1/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm -> {0}/repo2/x86_64/debug/packages/c/',
-        '{0}/repo1/i686/debug/packages/c/cello-debugsource-1.0-1.i686.rpm -> {0}/repo2/i686/debug/packages/c/',
-        '{0}/repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm -> {0}/repo2/x86_64/debug/packages/c/',
-        '{0}/repo1/x86_64/packages/c/cello-extra-1.0-1.noarch.rpm -> {0}/repo2/x86_64/packages/c/',
-    ]:
-        assert line.format(tmp_path) in result.output
-
     assert result.exit_code == 0
 
     # src

@@ -16,19 +16,6 @@ def test_remove(tmp_path, tmp_config):
 
     result = runner.invoke(uvalde.main, ['remove', 'repo1', 'cello-1.0-1'])
 
-    for line in [
-        '{0}/repo1/i686/packages/c/cello-1.0-1.i686.rpm X',
-        '{0}/repo1/src/packages/c/cello-1.0-1.src.rpm X',
-        '{0}/repo1/x86_64/packages/c/cello-1.0-1.x86_64.rpm X',
-        '{0}/repo1/i686/debug/packages/c/cello-debuginfo-1.0-1.i686.rpm X',
-        '{0}/repo1/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm X',
-        '{0}/repo1/i686/debug/packages/c/cello-debugsource-1.0-1.i686.rpm X',
-        '{0}/repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm X',
-        '{0}/repo1/i686/packages/c/cello-extra-1.0-1.noarch.rpm X',
-        '{0}/repo1/x86_64/packages/c/cello-extra-1.0-1.noarch.rpm X',
-    ]:
-        assert line.format(tmp_path) in result.output
-
     assert result.exit_code == 0
 
     # src

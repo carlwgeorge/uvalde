@@ -19,14 +19,18 @@ def remove(repo, nvrs):
     db.connect()
 
     repodirs = set()
+    artifacts = []
 
-    for label in nvrs:
-        nvr = NVR.get(label=label)
-        for artifact in nvr.artifacts:
+    with db.atomic():
+        for label in nvrs:
+            nvr = NVR.get(label=label)
+            artifacts.extend(nvr.artifacts)
+    db.close()
+
+    click.secho('deleting RPMs', fg='cyan')
+    with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
+        for artifact in artifacts_bar:
             target = base / artifact.path
-            output = click.style(f'{target}', fg='cyan')
-            x = click.style('X', fg='red')
-            click.echo(f'{output} {x}')
             target.unlink()
             remove_empty_parent(target)
 
@@ -34,7 +38,7 @@ def remove(repo, nvrs):
             # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm
             repodirs.add(target.parent.parent.parent)
 
-    db.close()
-
-    for repodir in repodirs:
-        createrepo(repodir)
+    click.secho('generating repodata', fg='cyan')
+    with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:
+        for repodir in repodirs_bar:
+            createrepo(repodir)

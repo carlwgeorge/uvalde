@@ -25,10 +25,17 @@ def move(from_repo, to_repo, nvrs):
     db.connect()
 
     repodirs = set()
+    artifacts = []
 
-    for label in nvrs:
-        nvr = NVR.get(label=label)
-        for artifact in nvr.artifacts:
+    with db.atomic():
+        for label in nvrs:
+            nvr = NVR.get(label=label)
+            artifacts.extend(nvr.artifacts)
+    db.close()
+
+    click.secho('moving RPMs', fg='cyan')
+    with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
+        for artifact in artifacts_bar:
             start = from_base / artifact.path
             end = to_base / artifact.path
             safe_check(start, end)
@@ -40,7 +47,7 @@ def move(from_repo, to_repo, nvrs):
             repodirs.add(start.parent.parent.parent)
             repodirs.add(end.parent.parent.parent)
 
-    db.close()
-
-    for repodir in repodirs:
-        createrepo(repodir)
+    click.secho('generating repodata', fg='cyan')
+    with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:
+        for repodir in repodirs_bar:
+            createrepo(repodir)
