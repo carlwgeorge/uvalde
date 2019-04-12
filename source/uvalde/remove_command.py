@@ -3,6 +3,7 @@ import click
 from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR
 from uvalde.repodata import createrepo
+from uvalde.transfer import remove_empty_parent
 
 
 @click.command()
@@ -27,6 +28,7 @@ def remove(repo, nvrs):
             x = click.style('X', fg='red')
             click.echo(f'{output} {x}')
             target.unlink()
+            remove_empty_parent(target)
 
             # walk up the path to the directory createrepo needs to be run in
             # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm
