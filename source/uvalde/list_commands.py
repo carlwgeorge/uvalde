@@ -1,5 +1,4 @@
 import click
-import createrepo_c
 
 from uvalde.configuration import load_config
 
@@ -12,9 +11,9 @@ def list_all():
     for repo in config:
         click.secho(f'{repo}', fg='cyan')
         srcpkgdir = repo.base / 'src' / 'packages'
-        for path in srcpkgdir.glob('**/*.rpm'):
-            pkg = createrepo_c.package_from_rpm(f'{path}')
-            click.echo(f'  {pkg.name}-{pkg.version}-{pkg.release}')
+        for srpm in srcpkgdir.glob('**/*.rpm'):
+            nvr = srpm.name.replace('.src.rpm', '')
+            click.echo(f'  {nvr}')
 
 
 @click.command('nvrs')
@@ -25,8 +24,8 @@ def list_nvrs(repo):
     config = load_config()
     srcpkgdir = config[repo].base / 'src' / 'packages'
     for srpm in srcpkgdir.glob('**/*.src.rpm'):
-        pkg = createrepo_c.package_from_rpm(f'{srpm}')
-        click.echo(f'{pkg.name}-{pkg.version}-{pkg.release}')
+        nvr = srpm.name.replace('.src.rpm', '')
+        click.echo(f'{nvr}')
 
 
 @click.command('repos')
