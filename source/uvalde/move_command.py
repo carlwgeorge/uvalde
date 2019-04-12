@@ -1,9 +1,11 @@
+import shutil
+
 import click
 
 from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR
 from uvalde.repodata import createrepo
-from uvalde.transfer import safe_move
+from uvalde.transfer import safe_check, remove_empty_parent
 
 
 @click.command()
@@ -29,7 +31,9 @@ def move(from_repo, to_repo, nvrs):
         for artifact in nvr.artifacts:
             start = from_base / artifact.path
             end = to_base / artifact.path
-            safe_move(start, end, cleanup=True)
+            safe_check(start, end)
+            shutil.move(start, end)
+            remove_empty_parent(start)
 
             # walk up the path to the directory createrepo needs to be run in
             # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm

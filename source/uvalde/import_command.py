@@ -1,4 +1,5 @@
 import pathlib
+import shutil
 
 import click
 import createrepo_c
@@ -6,7 +7,7 @@ import createrepo_c
 from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR, Artifact
 from uvalde.repodata import createrepo
-from uvalde.transfer import safe_copy, safe_move
+from uvalde.transfer import safe_check
 
 
 @click.command('import')
@@ -46,7 +47,8 @@ def import_(keep_original, repo, rpms):
                     artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
 
                     # move RPM file to destination
-                    safe_copy(rpm, destination)
+                    safe_check(rpm, destination)
+                    shutil.copy2(rpm, destination)
 
                 if not keep_original:
                     rpm.unlink()
@@ -76,9 +78,11 @@ def import_(keep_original, repo, rpms):
 
                 # move RPM file to destination
                 if keep_original:
-                    safe_copy(rpm, destination)
+                    safe_check(rpm, destination)
+                    shutil.copy2(rpm, destination)
                 else:
-                    safe_move(rpm, destination)
+                    safe_check(rpm, destination)
+                    shutil.move(rpm, destination)
 
     db.close()
 
