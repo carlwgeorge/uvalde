@@ -11,8 +11,8 @@ from uvalde.transfer import safe_check
 
 
 @click.command('import')
-@click.option('--keep', '-k', is_flag=True, help='Keep original RPM files.')
-@click.option('--repo', '-r', prompt=True, help='Repository to import RPMs into.')
+@click.option('-k', '--keep', is_flag=True, help='Keep original RPM files.')
+@click.option('-r', '--repo', prompt=True, help='Repository to import RPMs into.')
 @click.argument('rpms', type=pathlib.Path, nargs=-1)
 def import_(keep, repo, rpms):
     """Import RPM files to a repo."""
