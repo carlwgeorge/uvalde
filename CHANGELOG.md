@@ -1,3 +1,11 @@
+# 1.0.0
+
+* Remove empty parent directories when removing nvrs
+* Use progress bars for visual feedback
+* Add `--name` flag to filter list output
+* Rename `--keep-original` flag to just `--keep`
+* Convert repo arguments to prompted options (`--repo`, `--from`, and `--to`)
+
 # 0.3.0
 
 * Add `uvalde config show` command
