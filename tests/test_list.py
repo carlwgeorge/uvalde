@@ -10,7 +10,7 @@ def test_list_all(tmp_config):
     runner = click.testing.CliRunner()
 
     # import rpms so output is meaningful
-    args = ['import', '--keep-original', 'repo1']
+    args = ['import', '--keep', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
     runner.invoke(uvalde.main, args)
@@ -29,7 +29,7 @@ def test_list_nvrs(tmp_config):
     runner = click.testing.CliRunner()
 
     # import rpms so output is meaningful
-    args = ['import', '--keep-original', 'repo1']
+    args = ['import', '--keep', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
     runner.invoke(uvalde.main, args)

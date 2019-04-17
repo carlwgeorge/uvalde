@@ -14,7 +14,7 @@ def test_import(tmp_path, tmp_config, keep_flag):
 
     args = ['import', 'repo1']
     if keep_flag:
-        args.append('--keep-original')
+        args.append('--keep')
     test_data = pathlib.Path('tests/data')
     for rpm in test_data.glob('*.rpm'):
         destination = tmp_path / rpm.name
@@ -74,7 +74,7 @@ def test_import(tmp_path, tmp_config, keep_flag):
 def test_import_architecture_not_configured(tmp_config_architecture_not_configured):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep-original', 'repo1']
+    args = ['import', '--keep', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
 

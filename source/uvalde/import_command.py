@@ -11,10 +11,10 @@ from uvalde.transfer import safe_check
 
 
 @click.command('import')
-@click.option('--keep-original', '-k', is_flag=True)
+@click.option('--keep', '-k', is_flag=True, help='Keep original RPM files.')
 @click.argument('repo')
 @click.argument('rpms', type=pathlib.Path, nargs=-1)
-def import_(keep_original, repo, rpms):
+def import_(keep, repo, rpms):
     """Import RPM files to a repo."""
 
     config = load_config()
@@ -52,7 +52,7 @@ def import_(keep_original, repo, rpms):
                         safe_check(rpm, destination)
                         shutil.copy2(rpm, destination)
 
-                    if not keep_original:
+                    if not keep:
                         rpm.unlink()
                 else:
                     # ensure the incoming architecture matches one of the configured architectures
@@ -79,7 +79,7 @@ def import_(keep_original, repo, rpms):
                     artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
 
                     # move RPM file to destination
-                    if keep_original:
+                    if keep:
                         safe_check(rpm, destination)
                         shutil.copy2(rpm, destination)
                     else:

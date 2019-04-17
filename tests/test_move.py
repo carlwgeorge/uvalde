@@ -9,7 +9,7 @@ import uvalde
 def test_move(tmp_path, tmp_config):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep-original', 'repo1']
+    args = ['import', '--keep', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
     runner.invoke(uvalde.main, args)
