@@ -38,15 +38,8 @@ generated.
 
 ```
 $ uvalde import my-repo cello-*.rpm
-cello-1.0-1.i686.rpm -> /home/me/my-repo/i686/packages/c/
-cello-1.0-1.src.rpm -> /home/me/my-repo/src/packages/c/
-cello-1.0-1.x86_64.rpm -> /home/me/my-repo/x86_64/packages/c/
-cello-debuginfo-1.0-1.i686.rpm -> /home/me/my-repo/i686/debug/packages/c/
-cello-debuginfo-1.0-1.x86_64.rpm -> /home/me/my-repo/x86_64/debug/packages/c/
-cello-debugsource-1.0-1.i686.rpm -> /home/me/my-repo/i686/debug/packages/c/
-cello-debugsource-1.0-1.x86_64.rpm -> /home/me/my-repo/x86_64/debug/packages/c/
-cello-extra-1.0-1.noarch.rpm -> /home/me/my-repo/i686/packages/c/
-cello-extra-1.0-1.noarch.rpm -> /home/me/my-repo/x86_64/packages/c/
+importing RPMs
+generating repodata
 ```
 
 The relationships between RPMs and SRPMs are stored in an sqlite database so
@@ -62,15 +55,8 @@ my-other-repo
 ```
 ```
 $ uvalde move my-repo my-other-repo cello-1.0-1
-/home/me/my-repo/i686/packages/c/cello-1.0-1.i686.rpm -> /home/me/my-other-repo/i686/packages/c/
-/home/me/my-repo/src/packages/c/cello-1.0-1.src.rpm -> /home/me/my-other-repo/src/packages/c/
-/home/me/my-repo/x86_64/packages/c/cello-1.0-1.x86_64.rpm -> /home/me/my-other-repo/x86_64/packages/c/
-/home/me/my-repo/i686/debug/packages/c/cello-debuginfo-1.0-1.i686.rpm -> /home/me/my-other-repo/i686/debug/packages/c/
-/home/me/my-repo/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm -> /home/me/my-other-repo/x86_64/debug/packages/c/
-/home/me/my-repo/i686/debug/packages/c/cello-debugsource-1.0-1.i686.rpm -> /home/me/my-other-repo/i686/debug/packages/c/
-/home/me/my-repo/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm -> /home/me/my-other-repo/x86_64/debug/packages/c/
-/home/me/my-repo/x86_64/packages/c/cello-extra-1.0-1.noarch.rpm -> /home/me/my-other-repo/x86_64/packages/c/
-/home/me/my-repo/i686/packages/c/cello-extra-1.0-1.noarch.rpm -> /home/me/my-other-repo/i686/packages/c/
+moving RPMs
+generating repodata
 ```
 ```
 $ uvalde list all
@@ -80,15 +66,8 @@ my-other-repo
 ```
 ```
 $ uvalde remove my-other-repo cello-1.0-1
-/home/me/my-other-repo/i686/packages/c/cello-1.0-1.i686.rpm X
-/home/me/my-other-repo/src/packages/c/cello-1.0-1.src.rpm X
-/home/me/my-other-repo/x86_64/packages/c/cello-1.0-1.x86_64.rpm X
-/home/me/my-other-repo/i686/debug/packages/c/cello-debuginfo-1.0-1.i686.rpm X
-/home/me/my-other-repo/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm X
-/home/me/my-other-repo/i686/debug/packages/c/cello-debugsource-1.0-1.i686.rpm X
-/home/me/my-other-repo/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm X
-/home/me/my-other-repo/i686/packages/c/cello-extra-1.0-1.noarch.rpm X
-/home/me/my-other-repo/x86_64/packages/c/cello-extra-1.0-1.noarch.rpm X
+deleting RPMs
+generating repodata
 ```
 ```
 $ uvalde list all
