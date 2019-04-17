@@ -37,7 +37,7 @@ locations relative to your repository base.  Repository metadata will also be
 generated.
 
 ```
-$ uvalde import my-repo cello-*.rpm
+$ uvalde import --repo my-repo cello-*.rpm
 importing RPMs
 generating repodata
 ```
@@ -54,7 +54,7 @@ my-repo
 my-other-repo
 ```
 ```
-$ uvalde move my-repo my-other-repo cello-1.0-1
+$ uvalde move --from my-repo --to my-other-repo cello-1.0-1
 moving RPMs
 generating repodata
 ```
@@ -65,7 +65,7 @@ my-other-repo
   cello-1.0-1
 ```
 ```
-$ uvalde remove my-other-repo cello-1.0-1
+$ uvalde remove --repo my-other-repo cello-1.0-1
 deleting RPMs
 generating repodata
 ```
