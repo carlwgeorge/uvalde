@@ -12,7 +12,7 @@ import uvalde
 def test_import(tmp_path, tmp_config, keep_flag):
     runner = click.testing.CliRunner()
 
-    args = ['import', 'repo1']
+    args = ['import', '--repo', 'repo1']
     if keep_flag:
         args.append('--keep')
     test_data = pathlib.Path('tests/data')
@@ -74,7 +74,7 @@ def test_import(tmp_path, tmp_config, keep_flag):
 def test_import_architecture_not_configured(tmp_config_architecture_not_configured):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep', 'repo1']
+    args = ['import', '--keep', '--repo', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
 

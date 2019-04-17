@@ -9,12 +9,12 @@ import uvalde
 def test_remove(tmp_path, tmp_config):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep', 'repo1']
+    args = ['import', '--keep', '--repo', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
     runner.invoke(uvalde.main, args)
 
-    result = runner.invoke(uvalde.main, ['remove', 'repo1', 'cello-1.0-1'])
+    result = runner.invoke(uvalde.main, ['remove', '--repo', 'repo1', 'cello-1.0-1'])
 
     assert result.exit_code == 0
 
