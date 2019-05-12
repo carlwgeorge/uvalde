@@ -2,13 +2,10 @@ test_task:
   only_if: $CIRRUS_TAG == ''
   container:
     matrix:
-      image: python:3.6
-      image: python:3.7
-  pip_cache:
-    folder: ~/.cache/pip
-    fingerprint_script: pip freeze
+      image: fedora:28
+      image: fedora:29
+      image: fedora:30
   install_script:
-    - apt update
-    - apt --assume-yes install cmake gcc libbz2-dev libcurl4-openssl-dev libexpat1-dev libglib2.0-dev liblzma-dev libmagic-dev librpm-dev libsqlite3-dev libssl-dev libxml2-dev zlib1g-dev
-    - pip install --editable .[tests]
+    - dnf --assumeyes install python3-createrepo_c
+    - pip3 install --editable .[tests]
   test_script: pytest

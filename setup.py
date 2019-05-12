@@ -26,7 +26,9 @@ setuptools.setup(
     install_requires=[
         'appdirs',
         'click',
-        'createrepo_c',
+        # This is required, but the Fedora package is missing metadata that
+        # causes the entry_point script to abort.
+        # 'createrepo_c',
         'peewee>=3.0.0',
     ],
     extras_require={
