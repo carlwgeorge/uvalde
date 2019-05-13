@@ -1,3 +1,8 @@
+# 1.1.0
+
+* Combine `list` commands
+* Restore selinux context on imported files
+
 # 1.0.0
 
 * Remove empty parent directories when removing nvrs
