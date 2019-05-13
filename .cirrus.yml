@@ -6,6 +6,6 @@ test_task:
       image: fedora:29
       image: fedora:30
   install_script:
-    - dnf --assumeyes install python3-createrepo_c
+    - dnf --assumeyes install python3-{createrepo_c,libselinux}
     - pip3 install --editable .[tests]
   test_script: pytest

@@ -3,6 +3,7 @@ import shutil
 
 import click
 import createrepo_c
+import selinux
 
 from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR, Artifact
@@ -51,6 +52,7 @@ def import_(keep, repo, rpms):
                         # move RPM file to destination
                         safe_check(rpm, destination)
                         shutil.copy2(rpm, destination)
+                        selinux.restorecon(destination)
 
                     if not keep:
                         rpm.unlink()
@@ -85,6 +87,7 @@ def import_(keep, repo, rpms):
                     else:
                         safe_check(rpm, destination)
                         shutil.move(rpm, destination)
+                    selinux.restorecon(destination)
 
     db.close()
 

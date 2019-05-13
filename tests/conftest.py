@@ -64,3 +64,9 @@ def tmp_env(monkeypatch, tmp_path):
 
     # force locale to keep click happy
     monkeypatch.setenv('LANG', 'C.UTF-8')
+
+
+@pytest.fixture(autouse=True)
+def mask_restorecon(monkeypatch):
+    # segfaults in a container
+    monkeypatch.setattr('selinux.restorecon', lambda x: None)
