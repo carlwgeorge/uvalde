@@ -39,7 +39,7 @@ def import_(keep, repo, rpms):
                 if pkg.arch == 'src':
                     label = f'{pkg.name}-{pkg.version}-{pkg.release}'
                 else:
-                    label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
+                    label = pkg.rpm_sourcerpm[:-8]
                 nvr, _ = NVR.get_or_create(label=label)
 
                 if pkg.arch == 'noarch':
