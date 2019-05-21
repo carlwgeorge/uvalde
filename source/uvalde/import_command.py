@@ -35,11 +35,14 @@ def import_(keep, repo, rpms):
                 # read metadata from RPM file
                 pkg = createrepo_c.package_from_rpm(f'{rpm}')
 
-                if pkg.arch == 'noarch':
-                    # record NVR in database
+                # record NVR label in database
+                if pkg.arch == 'src':
+                    label = f'{pkg.name}-{pkg.version}-{pkg.release}'
+                else:
                     label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
-                    nvr, _ = NVR.get_or_create(label=label)
+                nvr, _ = NVR.get_or_create(label=label)
 
+                if pkg.arch == 'noarch':
                     # noarch goes in all architectures
                     for architecture in architectures:
                         # compute destination path
@@ -60,14 +63,6 @@ def import_(keep, repo, rpms):
                     # ensure the incoming architecture matches one of the configured architectures
                     if pkg.arch != 'src' and pkg.arch not in architectures:
                         raise SystemExit(f'{rpm.name}: architecture not configured for {repo}')
-
-                    # record NVR in database
-                    if pkg.rpm_sourcerpm:
-                        label = pkg.rpm_sourcerpm.rstrip('.src.rpm')
-                    else:
-                        # if pkg doesn't have the rpm_sourcerpm attribute, it's a SRPM itself
-                        label = f'{pkg.name}-{pkg.version}-{pkg.release}'
-                    nvr, _ = NVR.get_or_create(label=label)
 
                     # compute destination path
                     if pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource'):
