@@ -1,3 +1,7 @@
+# 1.1.1
+
+* Fix bug in NVR label creation
+
 # 1.1.0
 
 * Combine `list` commands
