@@ -27,7 +27,7 @@ base = /home/me/my-other-repo
 architectures = i686, x86_64
 ```
 ```
-$ uvalde list repos
+$ uvalde list
 my-repo
 my-other-repo
 ```
@@ -48,7 +48,7 @@ that you can manage the files collectively, referencing them by the NVR
 will be regenerated as needed.
 
 ```
-$ uvalde list all
+$ uvalde list
 my-repo
   cello-1.0-1
 my-other-repo
@@ -59,7 +59,7 @@ moving RPMs
 generating repodata
 ```
 ```
-$ uvalde list all
+$ uvalde list
 my-repo
 my-other-repo
   cello-1.0-1
@@ -70,7 +70,7 @@ deleting RPMs
 generating repodata
 ```
 ```
-$ uvalde list all
+$ uvalde list
 my-repo
 my-other-repo
 ```
