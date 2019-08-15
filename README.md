@@ -26,11 +26,6 @@ architectures = i686, x86_64
 base = /home/me/my-other-repo
 architectures = i686, x86_64
 ```
-```
-$ uvalde list
-my-repo
-my-other-repo
-```
 
 Now you can import RPM files and they will be placed at the appropriate
 locations relative to your repository base.  Repository metadata will also be
