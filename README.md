@@ -36,6 +36,61 @@ $ uvalde import --repo my-repo cello-*.rpm
 importing RPMs
 generating repodata
 ```
+```
+$ tree my-repo
+my-repo
+├── i686
+│   ├── debug
+│   │   ├── packages
+│   │   │   └── c
+│   │   │       ├── cello-debuginfo-1.0-1.i686.rpm
+│   │   │       └── cello-debugsource-1.0-1.i686.rpm
+│   │   └── repodata
+│   │       ├── filelists.xml.gz
+│   │       ├── other.xml.gz
+│   │       ├── primary.xml.gz
+│   │       └── repomd.xml
+│   ├── packages
+│   │   └── c
+│   │       ├── cello-1.0-1.i686.rpm
+│   │       └── cello-extra-1.0-1.noarch.rpm
+│   └── repodata
+│       ├── filelists.xml.gz
+│       ├── other.xml.gz
+│       ├── primary.xml.gz
+│       └── repomd.xml
+├── src
+│   ├── packages
+│   │   └── c
+│   │       └── cello-1.0-1.src.rpm
+│   └── repodata
+│       ├── filelists.xml.gz
+│       ├── other.xml.gz
+│       ├── primary.xml.gz
+│       └── repomd.xml
+└── x86_64
+    ├── debug
+    │   ├── packages
+    │   │   └── c
+    │   │       ├── cello-debuginfo-1.0-1.x86_64.rpm
+    │   │       └── cello-debugsource-1.0-1.x86_64.rpm
+    │   └── repodata
+    │       ├── filelists.xml.gz
+    │       ├── other.xml.gz
+    │       ├── primary.xml.gz
+    │       └── repomd.xml
+    ├── packages
+    │   └── c
+    │       ├── cello-1.0-1.x86_64.rpm
+    │       └── cello-extra-1.0-1.noarch.rpm
+    └── repodata
+        ├── filelists.xml.gz
+        ├── other.xml.gz
+        ├── primary.xml.gz
+        └── repomd.xml
+
+20 directories, 29 files
+```
 
 The relationships between RPMs and SRPMs are stored in an sqlite database so
 that you can manage the files collectively, referencing them by the NVR
