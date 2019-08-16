@@ -9,10 +9,10 @@ import uvalde
 
 
 @pytest.mark.parametrize('keep_flag', [False, True], ids=['remove original', 'keep original'])
-def test_import(tmp_path, tmp_config, keep_flag):
+def test_add(tmp_path, tmp_config, keep_flag):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--repo', 'repo1']
+    args = ['add', '--repo', 'repo1']
     if keep_flag:
         args.append('--keep')
     test_data = pathlib.Path('tests/data')
@@ -71,10 +71,10 @@ def test_import(tmp_path, tmp_config, keep_flag):
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
 
 
-def test_import_architecture_not_configured(tmp_config_architecture_not_configured):
+def test_add_architecture_not_configured(tmp_config_architecture_not_configured):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep', '--repo', 'repo1']
+    args = ['add', '--keep', '--repo', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
 

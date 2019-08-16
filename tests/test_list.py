@@ -59,7 +59,7 @@ def test_list(tmp_config, args, expected):
     runner = click.testing.CliRunner()
 
     # import rpms so output is meaningful
-    setup_args = ['import', '--keep', '--repo', 'repo1']
+    setup_args = ['add', '--keep', '--repo', 'repo1']
     test_data = pathlib.Path('tests/data')
     setup_args.extend(map(str, test_data.glob('*.rpm')))
     runner.invoke(uvalde.main, setup_args)

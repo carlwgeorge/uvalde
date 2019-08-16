@@ -17,7 +17,7 @@ def test_no_config(tmp_path):
 def test_no_repo(tmp_config):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep', '--repo', 'repo0']
+    args = ['add', '--keep', '--repo', 'repo0']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
 
@@ -39,7 +39,7 @@ def test_missing_base(tmp_config_missing_base):
 def test_missing_architectures(tmp_config_missing_architectures):
     runner = click.testing.CliRunner()
 
-    args = ['import', '--keep', '--repo', 'repo1']
+    args = ['add', '--keep', '--repo', 'repo1']
     test_data = pathlib.Path('tests/data')
     args.extend(map(str, test_data.glob('*.rpm')))
 

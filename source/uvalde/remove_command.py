@@ -27,7 +27,7 @@ def remove(repo, nvrs):
             artifacts.extend(nvr.artifacts)
     db.close()
 
-    click.secho('deleting RPMs', fg='cyan')
+    click.secho('removing RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
         for artifact in artifacts_bar:
             target = base / artifact.path

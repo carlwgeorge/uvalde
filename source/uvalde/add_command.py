@@ -11,12 +11,12 @@ from uvalde.repodata import createrepo
 from uvalde.transfer import safe_check
 
 
-@click.command('import')
+@click.command('add')
 @click.option('-k', '--keep', is_flag=True, help='Keep original RPM files.')
-@click.option('-r', '--repo', prompt=True, help='Repository to import RPMs into.')
+@click.option('-r', '--repo', prompt=True, help='Repository to add RPMs to.')
 @click.argument('rpms', type=pathlib.Path, nargs=-1)
-def import_(keep, repo, rpms):
-    """Import RPM files to a repo."""
+def add(keep, repo, rpms):
+    """Add RPM files to a repo."""
 
     config = load_config()
     base = config[repo].base
@@ -27,7 +27,7 @@ def import_(keep, repo, rpms):
 
     repodirs = set()
 
-    click.secho('importing RPMs', fg='cyan')
+    click.secho('adding RPMs', fg='cyan')
     with db.atomic():
         db.create_tables([NVR, Artifact])
         with click.progressbar(iterable=rpms, fill_char='█') as rpms_bar:
