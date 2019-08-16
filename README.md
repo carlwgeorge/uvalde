@@ -27,13 +27,12 @@ base = /home/me/my-other-repo
 architectures = i686, x86_64
 ```
 
-Now you can import RPM files and they will be placed at the appropriate
-locations relative to your repository base.  Repository metadata will also be
-generated.
+Now you can add RPM files and they will be placed at the appropriate locations
+relative to your repository base.  Repository metadata will also be generated.
 
 ```
-$ uvalde import --repo my-repo cello-*.rpm
-importing RPMs
+$ uvalde add --repo my-repo cello-*.rpm
+adding RPMs
 generating repodata
 ```
 ```
@@ -116,7 +115,7 @@ my-other-repo
 ```
 ```
 $ uvalde remove --repo my-other-repo cello-1.0-1
-deleting RPMs
+removing RPMs
 generating repodata
 ```
 ```
