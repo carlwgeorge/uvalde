@@ -79,5 +79,5 @@ def test_add_architecture_not_configured(tmp_config_architecture_not_configured)
     args.extend(map(str, test_data.glob('*.rpm')))
 
     result = runner.invoke(uvalde.main, args)
-    assert f'architecture not configured for repo1' in result.output
+    assert 'architecture not configured for repo1' in result.output
     assert result.exit_code == 1

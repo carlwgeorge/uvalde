@@ -23,7 +23,7 @@ def test_no_repo(tmp_config):
 
     result = runner.invoke(uvalde.main, args)
 
-    assert f'repo0: repo not configured' in result.output
+    assert 'repo0: repo not configured' in result.output
     assert result.exit_code == 1
 
 
@@ -32,7 +32,7 @@ def test_missing_base(tmp_config_missing_base):
 
     result = runner.invoke(uvalde.main, ['list'])
 
-    assert f'repo1: missing parameter base' in result.output
+    assert 'repo1: missing parameter base' in result.output
     assert result.exit_code == 1
 
 
@@ -45,5 +45,5 @@ def test_missing_architectures(tmp_config_missing_architectures):
 
     result = runner.invoke(uvalde.main, args)
 
-    assert f'repo1: missing parameter architectures' in result.output
+    assert 'repo1: missing parameter architectures' in result.output
     assert result.exit_code == 1
