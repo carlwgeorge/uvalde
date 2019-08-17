@@ -6,6 +6,7 @@ import pytest
 import repomd
 
 import uvalde
+from uvalde.database import load_db, NVR
 
 
 @pytest.mark.parametrize('keep_flag', [False, True], ids=['remove original', 'keep original'])
@@ -69,6 +70,26 @@ def test_add(tmp_path, tmp_config, keep_flag):
     assert [p.nevra for p in repo] == ['cello-debuginfo-1.0-1.x86_64', 'cello-debugsource-1.0-1.x86_64']
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm').exists()
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
+
+    db = load_db()
+    db.connect()
+
+    nvr = NVR.get(label='cello-1.0-1')
+
+    paths = set(artifact.path for artifact in nvr.artifacts)
+    expected_paths = set([
+        'src/packages/c/cello-1.0-1.src.rpm',
+        'i686/packages/c/cello-1.0-1.i686.rpm',
+        'i686/packages/c/cello-extra-1.0-1.noarch.rpm',
+        'i686/debug/packages/c/cello-debuginfo-1.0-1.i686.rpm',
+        'i686/debug/packages/c/cello-debugsource-1.0-1.i686.rpm',
+        'x86_64/packages/c/cello-1.0-1.x86_64.rpm',
+        'x86_64/packages/c/cello-extra-1.0-1.noarch.rpm',
+        'x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm',
+        'x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm',
+    ])
+
+    assert paths == expected_paths
 
 
 def test_add_architecture_not_configured(tmp_config_architecture_not_configured):
