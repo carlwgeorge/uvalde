@@ -1,6 +1,7 @@
 import click
 
 from uvalde.add_command import add
+from uvalde.index_command import index
 from uvalde.list_command import list_
 from uvalde.move_command import move
 from uvalde.remove_command import remove
@@ -12,6 +13,7 @@ def main():
 
 
 main.add_command(add)
+main.add_command(index)
 main.add_command(list_)
 main.add_command(move)
 main.add_command(remove)

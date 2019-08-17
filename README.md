@@ -123,3 +123,12 @@ $ uvalde list
 my-repo
 my-other-repo
 ```
+
+If you migrate the repo directory to a new system, you don't have to copy over
+the sqlite database.  Just copy the repo directory and your config, then you
+can regenerate the database.
+
+```
+$ uvalde index my-repo
+indexing repo my-repo
+```
