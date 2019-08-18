@@ -11,7 +11,7 @@ from uvalde.repodata import createrepo
 from uvalde.transfer import safe_check
 
 
-@click.command('add')
+@click.command()
 @click.option('-k', '--keep', is_flag=True, help='Keep original RPM files.')
 @click.option('-r', '--repo', prompt=True, help='Repository to add RPMs to.')
 @click.argument('rpms', type=pathlib.Path, nargs=-1)
