@@ -21,6 +21,9 @@ def move(from_repo, to_repo, nvrs):
     from_base = config[from_repo].base
     to_base = config[to_repo].base
 
+    from_prefix = config[from_repo].prefix
+    to_prefix = config[to_repo].prefix
+
     from_architectures = config[from_repo].architectures
     to_architectures = config[to_repo].architectures
     if not from_architectures == to_architectures:
@@ -47,11 +50,11 @@ def move(from_repo, to_repo, nvrs):
 
                     from_path = (
                         from_base / architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        from_prefix.format(artifact.filename) / artifact.filename
                     )
                     to_path = (
                         to_base / architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        to_prefix.format(artifact.filename) / artifact.filename
                     )
 
                     safe_check(from_path, to_path)
@@ -65,11 +68,11 @@ def move(from_repo, to_repo, nvrs):
 
                     from_path = (
                         from_base / artifact.architecture / 'debug' /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        from_prefix.format(artifact.filename) / artifact.filename
                     )
                     to_path = (
                         to_base / artifact.architecture / 'debug' /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        to_prefix.format(artifact.filename) / artifact.filename
                     )
 
                 else:
@@ -78,11 +81,11 @@ def move(from_repo, to_repo, nvrs):
 
                     from_path = (
                         from_base / artifact.architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        from_prefix.format(artifact.filename) / artifact.filename
                     )
                     to_path = (
                         to_base / artifact.architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        to_prefix.format(artifact.filename) / artifact.filename
                     )
 
                 safe_check(from_path, to_path)

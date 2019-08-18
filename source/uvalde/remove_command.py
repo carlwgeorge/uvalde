@@ -17,6 +17,7 @@ def remove(repo, nvrs):
 
     base = config[repo].base
     architectures = config[repo].architectures
+    prefix = config[repo].prefix
 
     repodirs = set()
     artifacts = []
@@ -36,7 +37,7 @@ def remove(repo, nvrs):
                     repodirs.add(base / architecture)
                     path = (
                         base / architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        prefix.format(artifact.filename) / artifact.filename
                     )
 
                     # remove file
@@ -48,14 +49,14 @@ def remove(repo, nvrs):
                     repodirs.add(base / artifact.architecture / 'debug')
                     path = (
                         base / artifact.architecture / 'debug' /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        prefix.format(artifact.filename) / artifact.filename
                     )
 
                 else:
                     repodirs.add(base / artifact.architecture)
                     path = (
                         base / artifact.architecture /
-                        'packages' / artifact.filename[0] / artifact.filename
+                        prefix.format(artifact.filename) / artifact.filename
                     )
 
                 # remove file

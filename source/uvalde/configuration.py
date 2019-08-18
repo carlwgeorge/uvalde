@@ -67,6 +67,15 @@ class RepoConfig:
             raise SystemExit(f'{self}: missing parameter architectures')
 
     @property
+    def prefix(self):
+        """Look up prefix setting of repo."""
+
+        try:
+            return self.section['prefix']
+        except KeyError:
+            return 'packages/{:.1}'
+
+    @property
     def hidden(self):
         """Look up hidden setting of repo."""
 

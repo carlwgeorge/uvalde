@@ -142,6 +142,13 @@ indexing repo my-repo
 base = /home/me/my-repo
 architectures = i686, x86_64
 
+# The prefix setting controls the directory layout for RPM files in a
+# repository.  It uses PEP 3101 string formatting, and is passed an argument of
+# the RPM filename.  It is optional.  The default value is 'packages/{:.1}',
+# which means use a packages directory with a subdirectory of the first letter
+# of the RPM filename.
+prefix = packages/{:.1}
+
 # The hidden setting controls if this repo is shown in the default
 # `uvalde list` output.  Hidden repos can still be shown with the `--all` flag,
 # or by asking for them by name with the `--repo` flag.  It is optional, and

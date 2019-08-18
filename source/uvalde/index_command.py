@@ -17,6 +17,7 @@ def index(repos):
         for repo in repos:
             base = config[repo].base
             architectures = config[repo].architectures
+            prefix = config[repo].prefix
             click.secho(f'indexing repo {repo}', fg='cyan')
 
             rpms = list(base.glob('**/*.rpm'))
@@ -35,7 +36,7 @@ def index(repos):
                     if pkg.arch == 'noarch':
                         # noarch path could be in any architectures
                         possible_destinations = [
-                            base / architecture / 'packages' / rpm.name[0] / rpm.name
+                            base / architecture / prefix.format(rpm.name) / rpm.name
                             for architecture in architectures
                         ]
 
@@ -59,9 +60,9 @@ def index(repos):
 
                         # compute destination path
                         if debug:
-                            destination = base / pkg.arch / 'debug' / 'packages' / rpm.name[0] / rpm.name
+                            destination = base / pkg.arch / 'debug' / prefix.format(rpm.name) / rpm.name
                         else:
-                            destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
+                            destination = base / pkg.arch / prefix.format(rpm.name) / rpm.name
 
                         if destination != rpm:
                             raise SystemExit(f'{rpm.name}: not in expected location')

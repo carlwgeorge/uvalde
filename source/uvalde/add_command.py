@@ -23,6 +23,7 @@ def add(keep, repo, rpms):
 
     base = config[repo].base
     architectures = config[repo].architectures
+    prefix = config[repo].prefix
 
     repodirs = set()
 
@@ -44,7 +45,7 @@ def add(keep, repo, rpms):
                     # noarch goes in all architectures
                     for architecture in architectures:
                         repodirs.add(base / architecture)
-                        destination = base / architecture / 'packages' / rpm.name[0] / rpm.name
+                        destination = base / architecture / prefix.format(rpm.name) / rpm.name
 
                         # record artifact in database
                         artifact, _ = Artifact.get_or_create(
@@ -70,10 +71,10 @@ def add(keep, repo, rpms):
 
                     if debug:
                         repodirs.add(base / pkg.arch / 'debug')
-                        destination = base / pkg.arch / 'debug' / 'packages' / rpm.name[0] / rpm.name
+                        destination = base / pkg.arch / 'debug' / prefix.format(rpm.name) / rpm.name
                     else:
                         repodirs.add(base / pkg.arch)
-                        destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
+                        destination = base / pkg.arch / prefix.format(rpm.name) / rpm.name
 
                     # record artifact in database
                     artifact, _ = Artifact.get_or_create(

@@ -22,7 +22,7 @@ def list_(names, repos, all_):
         click.secho(f'{repo}', fg='cyan')
 
         # look up NVRs based on SRPMS
-        srcpkgdir = repo.base / 'src' / 'packages'
+        srcpkgdir = repo.base / 'src'
         for srpm in srcpkgdir.glob('**/*.rpm'):
             nvr = srpm.name.replace('.src.rpm', '')
 
