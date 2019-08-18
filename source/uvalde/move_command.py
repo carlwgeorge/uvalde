@@ -36,6 +36,14 @@ def move(from_repo, to_repo, nvrs):
     artifacts = []
 
     for label in nvrs:
+        # ensure nvr is in repo
+        srcpkgdir = from_base / 'src'
+        for srpm in srcpkgdir.glob('**/*.rpm'):
+            if srpm.name == f'{label}.src.rpm':
+                break
+        else:
+            raise SystemExit(f'{label} not found in repo {from_repo}')
+
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 

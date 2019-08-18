@@ -84,3 +84,12 @@ def test_move_mixed_architectures(tmp_config_mixed_architectures):
 
     assert 'configured architectures for repo1 and repo2 do not match' in result.output
     assert result.exit_code == 1
+
+
+def test_move_missing(tmp_path, tmp_config):
+    runner = click.testing.CliRunner()
+
+    result = runner.invoke(uvalde.main, ['move', '--from', 'repo1', '--to', 'repo2', 'cello-1.0-1'])
+
+    assert 'cello-1.0-1 not found in repo repo1' in result.output
+    assert result.exit_code == 1

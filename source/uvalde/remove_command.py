@@ -25,6 +25,14 @@ def remove(repo, nvrs):
     artifacts = []
 
     for label in nvrs:
+        # ensure nvr is in repo
+        srcpkgdir = base / 'src'
+        for srpm in srcpkgdir.glob('**/*.rpm'):
+            if srpm.name == f'{label}.src.rpm':
+                break
+        else:
+            raise SystemExit(f'{label} not found in repo {repo}')
+
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 

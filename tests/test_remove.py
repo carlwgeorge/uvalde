@@ -51,3 +51,12 @@ def test_remove(tmp_path, tmp_config):
     assert not (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debuginfo-1.0-1.x86_64.rpm').exists()
     assert not (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
     assert not (tmp_path / 'repo1/x86_64/debug/packages/c').exists()
+
+
+def test_remove_missing(tmp_path, tmp_config):
+    runner = click.testing.CliRunner()
+
+    result = runner.invoke(uvalde.main, ['remove', '--repo', 'repo1', 'cello-1.0-1'])
+
+    assert 'cello-1.0-1 not found in repo repo1' in result.output
+    assert result.exit_code == 1
