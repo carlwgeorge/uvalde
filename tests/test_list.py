@@ -1,6 +1,7 @@
 import pathlib
 import textwrap
 
+import appdirs
 import click.testing
 import pytest
 
@@ -143,3 +144,22 @@ def test_list_hidden(tmp_config_hidden, args, expected):
 
     assert result.output == expected
     assert result.exit_code == 0
+
+
+def test_list_missing_nvr(tmp_config):
+    runner = click.testing.CliRunner()
+
+    setup_args = ['add', '--keep', '--repo', 'repo1']
+    test_data = pathlib.Path('tests/data')
+    setup_args.extend(map(str, test_data.glob('*.rpm')))
+    runner.invoke(uvalde.main, setup_args)
+
+    # remove the database
+    db_dir = pathlib.Path(appdirs.user_data_dir('uvalde'))
+    db_file = db_dir / 'index.1.db'
+    db_file.unlink()
+
+    result = runner.invoke(uvalde.main, ['list'])
+
+    assert 'found in repo directory but not in database' in result.output
+    assert result.exit_code == 1

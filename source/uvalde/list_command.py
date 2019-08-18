@@ -1,6 +1,7 @@
 import click
 
 from uvalde.configuration import load_config
+from uvalde.database import load_db, NVR
 
 
 @click.command('list')
@@ -11,6 +12,7 @@ def list_(names, repos, all_):
     """List RPM NVRs."""
 
     config = load_config()
+    db = load_db()
 
     for repo in config:
         # filter repos
@@ -26,9 +28,18 @@ def list_(names, repos, all_):
         for srpm in srcpkgdir.glob('**/*.rpm'):
             nvr = srpm.name.replace('.src.rpm', '')
 
+            # ensure NVR is in database
+            if not NVR.get_or_none(label=nvr):
+                raise SystemExit(
+                    f'{nvr} found in repo directory but not in database.  '
+                    'Run `uvalde index` to correct this.'
+                )
+
             # names filter
             name, _, _ = nvr.rsplit('-', maxsplit=2)
             if names and name not in names:
                 continue
 
             click.echo(f'  {nvr}')
+
+    db.close()
