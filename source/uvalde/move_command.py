@@ -20,8 +20,12 @@ def move(from_repo, to_repo, nvrs):
 
     from_base = config[from_repo].base
     to_base = config[to_repo].base
-    if not config[from_repo].architectures == config[to_repo].architectures:
+
+    from_architectures = config[from_repo].architectures
+    to_architectures = config[to_repo].architectures
+    if not from_architectures == to_architectures:
         raise SystemExit(f'configured architectures for {from_repo} and {to_repo} do not match')
+    architectures = from_architectures
 
     repodirs = set()
     artifacts = []
@@ -35,16 +39,55 @@ def move(from_repo, to_repo, nvrs):
     click.secho('moving RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
         for artifact in artifacts_bar:
-            start = from_base / artifact.path
-            end = to_base / artifact.path
-            safe_check(start, end)
-            shutil.move(start, end)
-            remove_empty_parent(start)
+            if artifact.architecture == 'noarch':
+                # noarch goes in all architectures
+                for architecture in architectures:
+                    repodirs.add(from_base / architecture)
+                    repodirs.add(to_base / architecture)
 
-            # walk up the path to the directory createrepo needs to be run in
-            # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm
-            repodirs.add(start.parent.parent.parent)
-            repodirs.add(end.parent.parent.parent)
+                    from_path = (
+                        from_base / architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+                    to_path = (
+                        to_base / architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+
+                    safe_check(from_path, to_path)
+                    shutil.move(from_path, to_path)
+                    remove_empty_parent(from_path)
+
+            else:
+                if artifact.debug:
+                    repodirs.add(from_base / artifact.architecture / 'debug')
+                    repodirs.add(to_base / artifact.architecture / 'debug')
+
+                    from_path = (
+                        from_base / artifact.architecture / 'debug' /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+                    to_path = (
+                        to_base / artifact.architecture / 'debug' /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+
+                else:
+                    repodirs.add(from_base / artifact.architecture)
+                    repodirs.add(to_base / artifact.architecture)
+
+                    from_path = (
+                        from_base / artifact.architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+                    to_path = (
+                        to_base / artifact.architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+
+                safe_check(from_path, to_path)
+                shutil.move(from_path, to_path)
+                remove_empty_parent(from_path)
 
     click.secho('generating repodata', fg='cyan')
     with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:

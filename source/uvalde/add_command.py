@@ -43,12 +43,15 @@ def add(keep, repo, rpms):
                 if pkg.arch == 'noarch':
                     # noarch goes in all architectures
                     for architecture in architectures:
-                        # compute destination path
                         repodirs.add(base / architecture)
                         destination = base / architecture / 'packages' / rpm.name[0] / rpm.name
 
-                        # record Artifact in database
-                        artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
+                        # record artifact in database
+                        artifact, _ = Artifact.get_or_create(
+                            nvr=nvr,
+                            filename=rpm.name,
+                            architecture=pkg.arch,
+                        )
 
                         # move RPM file to destination
                         safe_check(rpm, destination)
@@ -62,16 +65,23 @@ def add(keep, repo, rpms):
                     if pkg.arch != 'src' and pkg.arch not in architectures:
                         raise SystemExit(f'{rpm.name}: architecture not configured for {repo}')
 
-                    # compute destination path
-                    if pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource'):
+                    # remember if it's a debuginfo or debugsource package
+                    debug = pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource')
+
+                    if debug:
                         repodirs.add(base / pkg.arch / 'debug')
                         destination = base / pkg.arch / 'debug' / 'packages' / rpm.name[0] / rpm.name
                     else:
                         repodirs.add(base / pkg.arch)
                         destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
 
-                    # record Artifact in database
-                    artifact, _ = Artifact.get_or_create(nvr=nvr, path=destination.relative_to(base))
+                    # record artifact in database
+                    artifact, _ = Artifact.get_or_create(
+                        nvr=nvr,
+                        filename=rpm.name,
+                        architecture=pkg.arch,
+                        debug=debug,
+                    )
 
                     # move RPM file to destination
                     if keep:

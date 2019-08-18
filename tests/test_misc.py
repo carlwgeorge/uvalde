@@ -1,3 +1,7 @@
+import pathlib
+
+import appdirs
+import click.testing
 import pytest
 import repomd
 
@@ -52,3 +56,17 @@ def test_safe_check(tmp_path, start_exists, end_exists):
         uvalde.transfer.safe_check(start, end)
         assert end.parent.exists()
         assert end.parent.is_dir()
+
+
+def test_old_db_file(tmp_config):
+    runner = click.testing.CliRunner()
+
+    db_dir = pathlib.Path(appdirs.user_data_dir('uvalde'))
+    db_dir.mkdir(parents=True)
+    old_db_file = db_dir / 'rpms.sqlite'
+    old_db_file.touch()
+
+    result = runner.invoke(uvalde.main, ['list'])
+
+    assert f'Old database {old_db_file} detected' in result.output
+    assert result.exit_code == 1

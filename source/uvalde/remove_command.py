@@ -16,6 +16,7 @@ def remove(repo, nvrs):
     db = load_db()
 
     base = config[repo].base
+    architectures = config[repo].architectures
 
     repodirs = set()
     artifacts = []
@@ -29,13 +30,37 @@ def remove(repo, nvrs):
     click.secho('removing RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
         for artifact in artifacts_bar:
-            target = base / artifact.path
-            target.unlink()
-            remove_empty_parent(target)
+            if artifact.architecture == 'noarch':
+                # noarch is in all architectures
+                for architecture in architectures:
+                    repodirs.add(base / architecture)
+                    path = (
+                        base / architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
 
-            # walk up the path to the directory createrepo needs to be run in
-            # ex. /base/x86_64/ for /base/x86_64/packages/f/foo-1-1.rpm
-            repodirs.add(target.parent.parent.parent)
+                    # remove file
+                    path.unlink()
+                    remove_empty_parent(path)
+
+            else:
+                if artifact.debug:
+                    repodirs.add(base / artifact.architecture / 'debug')
+                    path = (
+                        base / artifact.architecture / 'debug' /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+
+                else:
+                    repodirs.add(base / artifact.architecture)
+                    path = (
+                        base / artifact.architecture /
+                        'packages' / artifact.filename[0] / artifact.filename
+                    )
+
+                # remove file
+                path.unlink()
+                remove_empty_parent(path)
 
     click.secho('generating repodata', fg='cyan')
     with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:

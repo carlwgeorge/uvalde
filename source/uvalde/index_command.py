@@ -42,13 +42,23 @@ def index(repos):
                         if rpm not in possible_destinations:
                             raise SystemExit(f'{rpm.name}: not in expected location')
 
+                        # record artifact in database
+                        artifact, _ = Artifact.get_or_create(
+                            nvr=nvr,
+                            filename=rpm.name,
+                            architecture=pkg.arch,
+                        )
+
                     else:
                         # ensure the incoming architecture matches one of the configured architectures
                         if pkg.arch != 'src' and pkg.arch not in architectures:
                             raise SystemExit(f'{rpm.name}: architecture not configured for repo {repo}')
 
+                        # remember if it's a debuginfo or debugsource package
+                        debug = pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource')
+
                         # compute destination path
-                        if pkg.name.endswith('-debuginfo') or pkg.name.endswith('-debugsource'):
+                        if debug:
                             destination = base / pkg.arch / 'debug' / 'packages' / rpm.name[0] / rpm.name
                         else:
                             destination = base / pkg.arch / 'packages' / rpm.name[0] / rpm.name
@@ -56,6 +66,12 @@ def index(repos):
                         if destination != rpm:
                             raise SystemExit(f'{rpm.name}: not in expected location')
 
-                    artifact, _ = Artifact.get_or_create(nvr=nvr, path=rpm.relative_to(base))
+                        # record artifact in database
+                        artifact, _ = Artifact.get_or_create(
+                            nvr=nvr,
+                            filename=rpm.name,
+                            architecture=pkg.arch,
+                            debug=debug,
+                        )
 
     db.close()

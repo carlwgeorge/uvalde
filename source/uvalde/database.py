@@ -20,7 +20,9 @@ class NVR(BaseModel):
 
 class Artifact(BaseModel):
     nvr = peewee.ForeignKeyField(NVR, backref='artifacts')
-    path = peewee.TextField(unique=True)
+    filename = peewee.TextField(unique=True)
+    architecture = peewee.TextField()
+    debug = peewee.BooleanField(default=False)
 
 
 def load_db():
@@ -30,7 +32,17 @@ def load_db():
     if not db_dir.is_dir():
         db_dir.mkdir(parents=True)
 
-    db_file = db_dir / 'rpms.sqlite'
+    old_db_files = [
+        db_dir / 'rpms.sqlite',
+    ]
+    for old_db_file in old_db_files:
+        if old_db_file.exists():
+            raise SystemExit(
+                f'Old database {old_db_file} detected.  '
+                'Delete it and run `uvalde index` to create a new database.'
+            )
+
+    db_file = db_dir / 'index.1.db'
     db.init(str(db_file))
     db.connect()
     db.create_tables([NVR, Artifact])
