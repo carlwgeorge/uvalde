@@ -10,8 +10,6 @@ database to remember what RPMs were built from the same SRPM.
 
 ## Usage
 
-#### Configuration
-
 Before running the application, create a config file to define the repositories
 you want to manage.  The base directory doesn't need to exist yet, uvalde will
 create it if needed.
@@ -131,4 +129,16 @@ can regenerate the database.
 ```
 $ uvalde index my-repo
 indexing repo my-repo
+```
+
+## Configuration Settings
+
+`~/.config/uvalde/repos.ini`
+```ini
+[my-repo]
+
+# The base and architectures determine the filesystem paths for your yum
+# repositories.  These are required settings.
+base = /home/me/my-repo
+architectures = i686, x86_64
 ```
