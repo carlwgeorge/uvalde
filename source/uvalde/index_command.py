@@ -14,8 +14,6 @@ def index(repos):
     db = load_db()
 
     with db.atomic():
-        db.create_tables([NVR, Artifact])
-
         for repo in repos:
             base = config[repo].base
             architectures = config[repo].architectures

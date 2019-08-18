@@ -33,5 +33,6 @@ def load_db():
     db_file = db_dir / 'rpms.sqlite'
     db.init(str(db_file))
     db.connect()
+    db.create_tables([NVR, Artifact])
 
     return db

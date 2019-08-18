@@ -28,7 +28,6 @@ def add(keep, repo, rpms):
 
     click.secho('adding RPMs', fg='cyan')
     with db.atomic():
-        db.create_tables([NVR, Artifact])
         with click.progressbar(iterable=rpms, fill_char='█') as rpms_bar:
             for rpm in rpms_bar:
                 # read metadata from RPM file
