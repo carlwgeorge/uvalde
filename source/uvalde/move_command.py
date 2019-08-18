@@ -33,11 +33,9 @@ def move(from_repo, to_repo, nvrs):
     repodirs = set()
     artifacts = []
 
-    with db.atomic():
-        for label in nvrs:
-            nvr = NVR.get(label=label)
-            artifacts.extend(nvr.artifacts)
-    db.close()
+    for label in nvrs:
+        nvr = NVR.get(label=label)
+        artifacts.extend(nvr.artifacts)
 
     click.secho('moving RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
@@ -91,6 +89,8 @@ def move(from_repo, to_repo, nvrs):
                 safe_check(from_path, to_path)
                 shutil.move(from_path, to_path)
                 remove_empty_parent(from_path)
+
+    db.close()
 
     click.secho('generating repodata', fg='cyan')
     with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:

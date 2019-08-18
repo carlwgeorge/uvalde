@@ -22,11 +22,9 @@ def remove(repo, nvrs):
     repodirs = set()
     artifacts = []
 
-    with db.atomic():
-        for label in nvrs:
-            nvr = NVR.get(label=label)
-            artifacts.extend(nvr.artifacts)
-    db.close()
+    for label in nvrs:
+        nvr = NVR.get(label=label)
+        artifacts.extend(nvr.artifacts)
 
     click.secho('removing RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
@@ -62,6 +60,8 @@ def remove(repo, nvrs):
                 # remove file
                 path.unlink()
                 remove_empty_parent(path)
+
+    db.close()
 
     click.secho('generating repodata', fg='cyan')
     with click.progressbar(iterable=repodirs, fill_char='█') as repodirs_bar:
