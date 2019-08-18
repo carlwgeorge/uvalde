@@ -32,6 +32,7 @@ def move(from_repo, to_repo, nvrs):
 
     click.secho('moving RPMs', fg='cyan')
 
+    # remember repo directories we've touched so we can regenerate repodata
     repodirs = set()
     artifacts = []
 
@@ -44,6 +45,7 @@ def move(from_repo, to_repo, nvrs):
         else:
             raise SystemExit(f'{label} not found in repo {from_repo}')
 
+        # collect artifacts
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 

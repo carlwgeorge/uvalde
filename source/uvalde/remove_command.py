@@ -21,6 +21,7 @@ def remove(repo, nvrs):
 
     click.secho('removing RPMs', fg='cyan')
 
+    # remember repo directories we've touched so we can regenerate repodata
     repodirs = set()
     artifacts = []
 
@@ -33,6 +34,7 @@ def remove(repo, nvrs):
         else:
             raise SystemExit(f'{label} not found in repo {repo}')
 
+        # collect artifacts
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 

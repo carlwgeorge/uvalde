@@ -27,6 +27,7 @@ def add(keep, repo, rpms):
 
     click.secho('adding RPMs', fg='cyan')
 
+    # remember repo directories we've touched so we can regenerate repodata
     repodirs = set()
 
     with db.atomic():
