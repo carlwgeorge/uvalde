@@ -25,7 +25,6 @@ def test_index(tmp_config):
     assert result.exit_code == 0
 
     db = load_db()
-    db.connect()
 
     nvr = NVR.get(label='cello-1.0-1')
     paths = set(artifact.path for artifact in nvr.artifacts)

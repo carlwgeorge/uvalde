@@ -19,11 +19,10 @@ def add(keep, repo, rpms):
     """Add RPM files to a repo."""
 
     config = load_config()
+    db = load_db()
+
     base = config[repo].base
     architectures = config[repo].architectures
-
-    db = load_db()
-    db.connect()
 
     repodirs = set()
 

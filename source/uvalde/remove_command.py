@@ -13,10 +13,9 @@ def remove(repo, nvrs):
     """Remove RPMs from repo."""
 
     config = load_config()
-    base = config[repo].base
-
     db = load_db()
-    db.connect()
+
+    base = config[repo].base
 
     repodirs = set()
     artifacts = []

@@ -72,7 +72,6 @@ def test_add(tmp_path, tmp_config, keep_flag):
     assert (tmp_path / 'repo1/x86_64/debug/packages/c/cello-debugsource-1.0-1.x86_64.rpm').exists()
 
     db = load_db()
-    db.connect()
 
     nvr = NVR.get(label='cello-1.0-1')
 

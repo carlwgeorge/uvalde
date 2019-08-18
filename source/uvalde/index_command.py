@@ -11,9 +11,7 @@ def index(repos):
     """Index existing repo tree."""
 
     config = load_config()
-
     db = load_db()
-    db.connect()
 
     with db.atomic():
         db.create_tables([NVR, Artifact])

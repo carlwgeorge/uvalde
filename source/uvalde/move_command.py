@@ -16,13 +16,12 @@ def move(from_repo, to_repo, nvrs):
     """Move RPMs between repos."""
 
     config = load_config()
+    db = load_db()
+
     from_base = config[from_repo].base
     to_base = config[to_repo].base
     if not config[from_repo].architectures == config[to_repo].architectures:
         raise SystemExit(f'configured architectures for {from_repo} and {to_repo} do not match')
-
-    db = load_db()
-    db.connect()
 
     repodirs = set()
     artifacts = []

@@ -32,5 +32,6 @@ def load_db():
 
     db_file = db_dir / 'rpms.sqlite'
     db.init(str(db_file))
+    db.connect()
 
     return db
