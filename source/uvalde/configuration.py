@@ -65,3 +65,18 @@ class RepoConfig:
             ]
         except KeyError:
             raise SystemExit(f'{self}: missing parameter architectures')
+
+    @property
+    def hidden(self):
+        """Look up hidden setting of repo."""
+
+        try:
+            raw = self.section['hidden']
+            if raw in ['1', 'y', 'Y', 'yes', 'Yes', 'YES', 'true', 'True', 'TRUE', 'on', 'On', 'ON']:
+                return True
+            elif raw in ['0', 'n', 'N', 'no', 'No', 'NO', 'false', 'False', 'FALSE', 'off', 'Off', 'OFF']:
+                return False
+        except KeyError:
+            pass
+
+        return False

@@ -68,3 +68,78 @@ def test_list(tmp_config, args, expected):
 
     assert result.output == expected
     assert result.exit_code == 0
+
+
+@pytest.mark.parametrize(
+    'args,expected',
+    [
+        (
+            ['list'],
+            textwrap.dedent('''\
+                repo1
+            ''')
+        ),
+        (
+            ['list', '--all'],
+            textwrap.dedent('''\
+                repo1
+                repo2
+            ''')
+        ),
+        (
+            ['list', '--repo', 'repo1'],
+            textwrap.dedent('''\
+                repo1
+            ''')
+        ),
+        (
+            ['list', '--repo', 'repo2'],
+            textwrap.dedent('''\
+                repo2
+            ''')
+        ),
+        (
+            ['list', '--repo', 'repo1', '--repo', 'repo2'],
+            textwrap.dedent('''\
+                repo1
+                repo2
+            ''')
+        ),
+        (
+            ['list', '--all', '--repo', 'repo1'],
+            textwrap.dedent('''\
+                repo1
+            ''')
+        ),
+        (
+            ['list', '--all', '--repo', 'repo2'],
+            textwrap.dedent('''\
+                repo2
+            ''')
+        ),
+        (
+            ['list', '--all', '--repo', 'repo1', '--repo', 'repo2'],
+            textwrap.dedent('''\
+                repo1
+                repo2
+            ''')
+        ),
+    ],
+    ids=[
+        'normal',
+        'all',
+        'filter repo',
+        'filter hidden repo',
+        'filter repo and hidden repo',
+        'all and filter repo',
+        'all and filter hidden repo',
+        'all and filter repo and hidden repo',
+    ],
+)
+def test_list_hidden(tmp_config_hidden, args, expected):
+    runner = click.testing.CliRunner()
+
+    result = runner.invoke(uvalde.main, args)
+
+    assert result.output == expected
+    assert result.exit_code == 0

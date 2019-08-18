@@ -57,6 +57,18 @@ def tmp_config_architecture_not_configured(tmp_path):
     write_config(tmp_path, parser)
 
 
+@pytest.fixture
+def tmp_config_hidden(tmp_path):
+    parser = configparser.ConfigParser()
+    for repo in ['repo1', 'repo2']:
+        parser.add_section(repo)
+        parser[repo]['base'] = str(tmp_path / repo)
+        parser[repo]['architectures'] = 'i686, x86_64'
+    parser['repo1']['hidden'] = 'no'
+    parser['repo2']['hidden'] = 'yes'
+    write_config(tmp_path, parser)
+
+
 @pytest.fixture(autouse=True)
 def tmp_env(monkeypatch, tmp_path):
     # isolate config and database files to the testing directory

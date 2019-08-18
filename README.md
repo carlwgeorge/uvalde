@@ -141,4 +141,10 @@ indexing repo my-repo
 # repositories.  These are required settings.
 base = /home/me/my-repo
 architectures = i686, x86_64
+
+# The hidden setting controls if this repo is shown in the default
+# `uvalde list` output.  Hidden repos can still be shown with the `--all` flag,
+# or by asking for them by name with the `--repo` flag.  It is optional, and
+# defaults to no.
+hidden = no
 ```

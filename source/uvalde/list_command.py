@@ -6,14 +6,17 @@ from uvalde.configuration import load_config
 @click.command('list')
 @click.option('-n', '--name', 'names', multiple=True, help='Limit output by package name.')
 @click.option('-r', '--repo', 'repos', multiple=True, help='Limit output by repository.')
-def list_(names, repos):
+@click.option('-a', '--all', 'all_', is_flag=True, help='Include hidden repositories.')
+def list_(names, repos, all_):
     """List RPM NVRs."""
 
     config = load_config()
 
     for repo in config:
-        # repos filter
+        # filter repos
         if repos and str(repo) not in repos:
+            continue
+        if not all_ and not repos and repo.hidden:
             continue
 
         click.secho(f'{repo}', fg='cyan')
