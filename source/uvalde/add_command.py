@@ -25,9 +25,10 @@ def add(keep, repo, rpms):
     architectures = config[repo].architectures
     prefix = config[repo].prefix
 
+    click.secho('adding RPMs', fg='cyan')
+
     repodirs = set()
 
-    click.secho('adding RPMs', fg='cyan')
     with db.atomic():
         with click.progressbar(iterable=rpms, fill_char='█') as rpms_bar:
             for rpm in rpms_bar:

@@ -19,6 +19,8 @@ def remove(repo, nvrs):
     architectures = config[repo].architectures
     prefix = config[repo].prefix
 
+    click.secho('removing RPMs', fg='cyan')
+
     repodirs = set()
     artifacts = []
 
@@ -26,7 +28,6 @@ def remove(repo, nvrs):
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 
-    click.secho('removing RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
         for artifact in artifacts_bar:
             if artifact.architecture == 'noarch':

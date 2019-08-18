@@ -30,6 +30,8 @@ def move(from_repo, to_repo, nvrs):
         raise SystemExit(f'configured architectures for {from_repo} and {to_repo} do not match')
     architectures = from_architectures
 
+    click.secho('moving RPMs', fg='cyan')
+
     repodirs = set()
     artifacts = []
 
@@ -37,7 +39,6 @@ def move(from_repo, to_repo, nvrs):
         nvr = NVR.get(label=label)
         artifacts.extend(nvr.artifacts)
 
-    click.secho('moving RPMs', fg='cyan')
     with click.progressbar(iterable=artifacts, fill_char='█') as artifacts_bar:
         for artifact in artifacts_bar:
             if artifact.architecture == 'noarch':
