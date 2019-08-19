@@ -8,7 +8,7 @@ from uvalde.transfer import remove_empty_parent
 
 @click.command()
 @click.option('-r', '--repo', prompt=True, help='Repository to remove NVRs from.')
-@click.argument('nvrs', nargs=-1)
+@click.argument('nvrs', required=True, nargs=-1)
 def remove(repo, nvrs):
     """Remove RPMs from repo."""
 

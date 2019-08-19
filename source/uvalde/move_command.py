@@ -11,7 +11,7 @@ from uvalde.transfer import safe_check, remove_empty_parent
 @click.command()
 @click.option('-f', '--from', 'from_repo', prompt=True, help='Repository to move NVRs from.')
 @click.option('-t', '--to', 'to_repo', prompt=True, help='Repository to move NVRs to.')
-@click.argument('nvrs', nargs=-1)
+@click.argument('nvrs', required=True, nargs=-1)
 def move(from_repo, to_repo, nvrs):
     """Move RPMs between repos."""
 

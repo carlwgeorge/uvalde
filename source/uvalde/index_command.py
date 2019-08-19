@@ -6,7 +6,7 @@ from uvalde.database import load_db, NVR, Artifact
 
 
 @click.command()
-@click.argument('repos', nargs=-1)
+@click.argument('repos', required=True, nargs=-1)
 def index(repos):
     """Index existing repo tree."""
 

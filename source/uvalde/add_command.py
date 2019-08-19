@@ -14,7 +14,7 @@ from uvalde.transfer import safe_check
 @click.command()
 @click.option('-k', '--keep', is_flag=True, help='Keep original RPM files.')
 @click.option('-r', '--repo', prompt=True, help='Repository to add RPMs to.')
-@click.argument('rpms', type=pathlib.Path, nargs=-1)
+@click.argument('rpms', type=pathlib.Path, required=True, nargs=-1)
 def add(keep, repo, rpms):
     """Add RPM files to a repo."""
 
