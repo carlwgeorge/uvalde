@@ -1,3 +1,12 @@
+# 2.0.0
+
+* Remove `config show` command
+* Rename `import` command to `add`
+* Add `index` command
+* Add hidden config option to hide some repos by default
+* New database schema and new database filename
+* Add prefix config option to customize directory structure
+
 # 1.1.1
 
 * Fix bug in NVR label creation

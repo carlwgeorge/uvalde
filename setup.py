@@ -9,7 +9,7 @@ with pathlib.Path('README.md').open() as f:
 
 setuptools.setup(
     name='uvalde',
-    version='1.1.1',
+    version='2.0.0',
     author='Carl George',
     author_email='carl@george.computer',
     description='Yum repository management tool',
