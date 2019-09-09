@@ -1,4 +1,5 @@
 import click
+import createrepo_c
 
 from uvalde.configuration import load_config
 from uvalde.database import load_db, NVR
@@ -23,23 +24,32 @@ def list_(names, repos, all_):
 
         click.secho(f'{repo}', fg='cyan')
 
-        # look up NVRs based on SRPMS
-        srcpkgdir = repo.base / 'src'
-        for srpm in srcpkgdir.glob('**/*.rpm'):
-            nvr = srpm.name.replace('.src.rpm', '')
+        labels = set()
+
+        # scan filesystem for RPMS
+        for rpm in repo.base.glob('**/*.rpm'):
+            # read metadata from RPM file
+            pkg = createrepo_c.package_from_rpm(f'{rpm}')
+            if pkg.arch == 'src':
+                label = f'{pkg.name}-{pkg.version}-{pkg.release}'
+            else:
+                label = pkg.rpm_sourcerpm[:-8]
 
             # ensure NVR is in database
-            if not NVR.get_or_none(label=nvr):
+            if not NVR.get_or_none(label=label):
                 raise SystemExit(
-                    f'{nvr} found in repo directory but not in database.  '
+                    f'{rpm.name} found in repo directory but {label} is not in the database.  '
                     'Run `uvalde index` to correct this.'
                 )
 
             # names filter
-            name, _, _ = nvr.rsplit('-', maxsplit=2)
+            name, _, _ = label.rsplit('-', maxsplit=2)
             if names and name not in names:
                 continue
 
-            click.echo(f'  {nvr}')
+            labels.add(label)
+
+        for label in labels:
+            click.echo(f'  {label}')
 
     db.close()

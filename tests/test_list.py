@@ -161,5 +161,5 @@ def test_list_missing_nvr(tmp_config):
 
     result = runner.invoke(uvalde.main, ['list'])
 
-    assert 'found in repo directory but not in database' in result.output
+    assert 'is not in the database' in result.output
     assert result.exit_code == 1
