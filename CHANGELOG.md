@@ -1,3 +1,7 @@
+# 2.0.1
+
+* Re-add createrepo\_c and selinux dependencies
+
 # 2.0.0
 
 * Remove `config show` command
