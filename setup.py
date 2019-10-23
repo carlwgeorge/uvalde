@@ -26,10 +26,8 @@ setuptools.setup(
     install_requires=[
         'appdirs',
         'click',
-        # These are required, but the Fedora packages are missing metadata that
-        # causes the entry_point script to abort.
-        # 'createrepo_c',
-        # 'selinux',
+        'createrepo_c',
+        'selinux',
         'peewee>=3.0.0',
     ],
     extras_require={
