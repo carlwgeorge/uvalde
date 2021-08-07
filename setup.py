@@ -32,7 +32,8 @@ setuptools.setup(
     ],
     extras_require={
         'tests': [
-            'pytest',
+            # tmp_path fixture
+            'pytest>=3.9',
             'pytest-cov',
             'pytest-flake8',
             'repomd',
