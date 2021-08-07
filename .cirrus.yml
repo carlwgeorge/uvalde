@@ -4,7 +4,6 @@ test_task:
     matrix:
       image: fedora:33
       image: fedora:34
-      image: fedora:35
   install_script:
     - dnf --assumeyes install python3-{createrepo_c,libselinux,pip}
     - pip3 install --editable .[tests]
